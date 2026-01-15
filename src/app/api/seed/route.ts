@@ -2,7 +2,7 @@ import { NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
 import bcrypt from "bcryptjs"
 
-export async function POST() {
+async function seedData() {
   try {
     const existingAdmin = await prisma.user.findUnique({
       where: { email: "admin@site.com" },
@@ -103,4 +103,12 @@ export async function POST() {
     console.error("Seed error:", error)
     return NextResponse.json({ error: "Seed hatası" }, { status: 500 })
   }
+}
+
+export async function GET() {
+  return seedData()
+}
+
+export async function POST() {
+  return seedData()
 }
