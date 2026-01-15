@@ -11,13 +11,16 @@ import {
   Eye,
   Pencil,
   Trash2,
+  MapPin,
+  Calendar,
+  User,
+  MessageSquare
 } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
+import { ModernButton } from "@/components/ui/modern-button"
+import { ModernCard } from "@/components/ui/modern-card"
+import { ModernBadge } from "@/components/ui/modern-badge"
+import { ModernInput } from "@/components/ui/modern-input"
+import { ModernTextarea } from "@/components/ui/modern-textarea"
 import {
   Select,
   SelectContent,
@@ -67,20 +70,20 @@ interface Issue {
   _count: { comments: number }
 }
 
-const priorityColors: Record<string, string> = {
-  LOW: "bg-gray-100 text-gray-700",
-  MEDIUM: "bg-blue-100 text-blue-700",
-  HIGH: "bg-orange-100 text-orange-700",
-  URGENT: "bg-red-100 text-red-700",
+const priorityVariants: Record<string, "secondary" | "info" | "warning" | "danger"> = {
+  LOW: "secondary",
+  MEDIUM: "info",
+  HIGH: "warning",
+  URGENT: "danger",
 }
 
-const statusColors: Record<string, string> = {
-  OPEN: "bg-yellow-100 text-yellow-700",
-  IN_PROGRESS: "bg-blue-100 text-blue-700",
-  WAITING: "bg-purple-100 text-purple-700",
-  RESOLVED: "bg-green-100 text-green-700",
-  CLOSED: "bg-gray-100 text-gray-700",
-  CANCELLED: "bg-red-100 text-red-700",
+const statusVariants: Record<string, "warning" | "info" | "primary" | "success" | "secondary" | "danger"> = {
+  OPEN: "warning",
+  IN_PROGRESS: "info",
+  WAITING: "primary",
+  RESOLVED: "success",
+  CLOSED: "secondary",
+  CANCELLED: "danger",
 }
 
 export default function EksikliklerPage() {
@@ -203,36 +206,36 @@ export default function EksikliklerPage() {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div className="space-y-8 animate-fade-in">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Eksiklikler</h1>
-          <p className="text-gray-500">Tüm eksiklikleri ve arızaları yönetin</p>
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">Eksiklikler</h1>
+          <p className="text-gray-500 mt-1 text-lg">Tüm eksiklikleri ve arızaları yönetin</p>
         </div>
-        <Button onClick={() => { resetForm(); setIsDialogOpen(true); }}>
-          <Plus className="h-4 w-4 mr-2" />
+        <ModernButton onClick={() => { resetForm(); setIsDialogOpen(true); }} icon={<Plus className="w-5 h-5" />}>
           Yeni Eksiklik
-        </Button>
+        </ModernButton>
       </div>
 
       {/* Filters */}
-      <Card>
-        <CardContent className="pt-4">
-          <div className="flex flex-col sm:flex-row gap-4">
-            <div className="flex-1">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-                <Input
-                  placeholder="Eksiklik ara..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10"
-                />
-              </div>
-            </div>
+      <ModernCard padding="md" className="bg-white/80 backdrop-blur-sm">
+        <div className="flex flex-col md:flex-row gap-4">
+          <div className="flex-1">
+            <ModernInput
+              placeholder="Eksiklik ara..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              icon={<Search className="w-5 h-5" />}
+              className="bg-white"
+            />
+          </div>
+          <div className="flex gap-4">
             <Select value={filterStatus} onValueChange={setFilterStatus}>
-              <SelectTrigger className="w-full sm:w-40">
-                <SelectValue placeholder="Durum" />
+              <SelectTrigger className="w-full md:w-48 h-12 rounded-xl border-2 border-gray-200 bg-white focus:ring-2 focus:ring-primary-500">
+                <div className="flex items-center gap-2">
+                  <Filter className="w-4 h-4 text-gray-500" />
+                  <SelectValue placeholder="Durum" />
+                </div>
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">Tüm Durumlar</SelectItem>
@@ -242,8 +245,11 @@ export default function EksikliklerPage() {
               </SelectContent>
             </Select>
             <Select value={filterPriority} onValueChange={setFilterPriority}>
-              <SelectTrigger className="w-full sm:w-40">
-                <SelectValue placeholder="Öncelik" />
+              <SelectTrigger className="w-full md:w-48 h-12 rounded-xl border-2 border-gray-200 bg-white focus:ring-2 focus:ring-primary-500">
+                <div className="flex items-center gap-2">
+                  <AlertTriangle className="w-4 h-4 text-gray-500" />
+                  <SelectValue placeholder="Öncelik" />
+                </div>
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">Tüm Öncelikler</SelectItem>
@@ -253,61 +259,87 @@ export default function EksikliklerPage() {
               </SelectContent>
             </Select>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </ModernCard>
 
       {/* Issues List */}
       {filteredIssues.length === 0 ? (
-        <Card>
-          <CardContent className="flex flex-col items-center justify-center py-12">
-            <AlertTriangle className="h-12 w-12 text-gray-400 mb-4" />
-            <h3 className="text-lg font-medium text-gray-900">Eksiklik bulunamadı</h3>
-            <p className="text-gray-500 mb-4">Henüz kayıtlı eksiklik yok veya filtrelerinize uygun sonuç yok</p>
-            <Button onClick={() => setIsDialogOpen(true)}>
+        <ModernCard className="flex flex-col items-center justify-center py-16 text-center" variant="bordered">
+          <div className="p-4 rounded-full bg-red-50 mb-4">
+            <AlertTriangle className="h-12 w-12 text-red-400" />
+          </div>
+          <h3 className="text-xl font-semibold text-gray-900">Eksiklik bulunamadı</h3>
+          <p className="text-gray-500 mt-2 max-w-sm mx-auto">
+            Henüz kayıtlı eksiklik yok veya filtrelerinize uygun sonuç bulunamadı.
+          </p>
+          <div className="mt-6">
+            <ModernButton onClick={() => setIsDialogOpen(true)} variant="secondary">
               <Plus className="h-4 w-4 mr-2" />
               Eksiklik Ekle
-            </Button>
-          </CardContent>
-        </Card>
+            </ModernButton>
+          </div>
+        </ModernCard>
       ) : (
-        <div className="space-y-3">
+        <div className="grid gap-4">
           {filteredIssues.map((issue) => (
-            <Card key={issue.id} className="hover:shadow-md transition-shadow">
-              <CardContent className="p-4">
-                <div className="flex items-start justify-between gap-4">
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-1">
-                      <Badge className={priorityColors[issue.priority]}>
-                        {issuePriorityLabels[issue.priority]}
-                      </Badge>
-                      <Badge className={statusColors[issue.status]}>
-                        {issueStatusLabels[issue.status]}
-                      </Badge>
-                      <Badge variant="outline">
-                        {issueTypeLabels[issue.type]}
-                      </Badge>
-                    </div>
-                    <h3 className="font-medium text-gray-900 truncate">{issue.title}</h3>
-                    <p className="text-sm text-gray-500 mt-1">{getLocationText(issue)}</p>
-                    <div className="flex items-center gap-4 mt-2 text-xs text-gray-400">
-                      <span>Oluşturan: {issue.createdBy.name}</span>
-                      <span>{formatDateTime(issue.createdAt)}</span>
-                      {issue.media.length > 0 && (
-                        <span className="flex items-center gap-1">
-                          <Camera className="h-3 w-3" />
-                          {issue.media.length} medya
-                        </span>
-                      )}
-                      {issue._count.comments > 0 && (
-                        <span>{issue._count.comments} yorum</span>
-                      )}
-                    </div>
+            <ModernCard key={issue.id} hover padding="md" className="group border-l-4" style={{ 
+              borderLeftColor: issue.priority === 'URGENT' ? '#ef4444' : 
+                             issue.priority === 'HIGH' ? '#f59e0b' : 
+                             issue.priority === 'MEDIUM' ? '#3b82f6' : '#94a3b8' 
+            }}>
+              <div className="flex flex-col md:flex-row md:items-center gap-4 justify-between">
+                <div className="flex-1 min-w-0">
+                  <div className="flex flex-wrap items-center gap-2 mb-2">
+                    <ModernBadge variant={priorityVariants[issue.priority]} size="sm">
+                      {issuePriorityLabels[issue.priority]}
+                    </ModernBadge>
+                    <ModernBadge variant={statusVariants[issue.status]} size="sm">
+                      {issueStatusLabels[issue.status]}
+                    </ModernBadge>
+                    <span className="text-xs font-medium px-2 py-1 rounded-md bg-gray-100 text-gray-600 border border-gray-200">
+                      {issueTypeLabels[issue.type]}
+                    </span>
                   </div>
+                  
+                  <h3 className="text-lg font-bold text-gray-900 truncate group-hover:text-primary-600 transition-colors">
+                    {issue.title}
+                  </h3>
+                  
+                  <div className="flex items-center gap-2 mt-1 text-gray-500 text-sm">
+                    <MapPin className="h-4 w-4" />
+                    <span>{getLocationText(issue)}</span>
+                  </div>
+
+                  <div className="flex flex-wrap items-center gap-4 mt-3 text-xs text-gray-400">
+                    <div className="flex items-center gap-1.5">
+                      <User className="h-3.5 w-3.5" />
+                      {issue.createdBy.name}
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      <Calendar className="h-3.5 w-3.5" />
+                      {formatDateTime(issue.createdAt)}
+                    </div>
+                    {issue.media.length > 0 && (
+                      <div className="flex items-center gap-1.5 text-primary-600">
+                        <Camera className="h-3.5 w-3.5" />
+                        {issue.media.length} medya
+                      </div>
+                    )}
+                    {issue._count.comments > 0 && (
+                      <div className="flex items-center gap-1.5 text-blue-600">
+                        <MessageSquare className="h-3.5 w-3.5" />
+                        {issue._count.comments} yorum
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2 md:self-center pt-4 md:pt-0 border-t md:border-t-0 border-gray-100">
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" size="icon">
-                        <MoreHorizontal className="h-4 w-4" />
-                      </Button>
+                      <button className="p-2 rounded-xl hover:bg-gray-100 text-gray-400 hover:text-gray-600 transition-colors">
+                        <MoreHorizontal className="h-5 w-5" />
+                      </button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                       <DropdownMenuItem asChild>
@@ -323,7 +355,7 @@ export default function EksikliklerPage() {
                         </Link>
                       </DropdownMenuItem>
                       <DropdownMenuItem
-                        className="text-red-600"
+                        className="text-red-600 focus:text-red-600 focus:bg-red-50"
                         onClick={() => handleDelete(issue.id)}
                       >
                         <Trash2 className="h-4 w-4 mr-2" />
@@ -331,39 +363,44 @@ export default function EksikliklerPage() {
                       </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
+                  
+                  <ModernButton size="sm" variant="ghost" className="hidden md:flex" asChild>
+                    <Link href={`/eksiklikler/${issue.id}`}>
+                      <Eye className="h-4 w-4 mr-2" />
+                      İncele
+                    </Link>
+                  </ModernButton>
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </ModernCard>
           ))}
         </div>
       )}
 
       {/* New Issue Dialog */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="max-w-lg">
-          <DialogHeader>
-            <DialogTitle>Yeni Eksiklik Ekle</DialogTitle>
+        <DialogContent className="max-w-lg p-0 overflow-hidden bg-white/95 backdrop-blur-xl border border-white/20 shadow-2xl">
+          <DialogHeader className="p-6 bg-gradient-to-r from-gray-50 to-white border-b border-gray-100">
+            <DialogTitle className="text-xl font-bold text-gray-900">Yeni Eksiklik Ekle</DialogTitle>
           </DialogHeader>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="title">Başlık *</Label>
-              <Input
-                id="title"
-                value={formData.title}
-                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                placeholder="Eksiklik başlığı"
-                required
-              />
-            </div>
+          <form onSubmit={handleSubmit} className="p-6 space-y-4">
+            <ModernInput
+              label="Başlık *"
+              id="title"
+              value={formData.title}
+              onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+              placeholder="Eksiklik başlığı"
+              required
+            />
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label>Tür</Label>
+                <label className="text-sm font-semibold text-gray-700">Tür</label>
                 <Select
                   value={formData.type}
                   onValueChange={(value) => setFormData({ ...formData, type: value })}
                 >
-                  <SelectTrigger>
+                  <SelectTrigger className="h-12 rounded-xl border-2 border-gray-200 bg-white">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -374,12 +411,12 @@ export default function EksikliklerPage() {
                 </Select>
               </div>
               <div className="space-y-2">
-                <Label>Öncelik</Label>
+                <label className="text-sm font-semibold text-gray-700">Öncelik</label>
                 <Select
                   value={formData.priority}
                   onValueChange={(value) => setFormData({ ...formData, priority: value })}
                 >
-                  <SelectTrigger>
+                  <SelectTrigger className="h-12 rounded-xl border-2 border-gray-200 bg-white">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -393,7 +430,7 @@ export default function EksikliklerPage() {
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label>Site</Label>
+                <label className="text-sm font-semibold text-gray-700">Site</label>
                 <Select
                   value={formData.siteId}
                   onValueChange={(value) => {
@@ -401,7 +438,7 @@ export default function EksikliklerPage() {
                     fetchBlocks(value)
                   }}
                 >
-                  <SelectTrigger>
+                  <SelectTrigger className="h-12 rounded-xl border-2 border-gray-200 bg-white">
                     <SelectValue placeholder="Site seçin" />
                   </SelectTrigger>
                   <SelectContent>
@@ -412,13 +449,13 @@ export default function EksikliklerPage() {
                 </Select>
               </div>
               <div className="space-y-2">
-                <Label>Blok</Label>
+                <label className="text-sm font-semibold text-gray-700">Blok</label>
                 <Select
                   value={formData.blockId}
                   onValueChange={(value) => setFormData({ ...formData, blockId: value })}
                   disabled={!formData.siteId}
                 >
-                  <SelectTrigger>
+                  <SelectTrigger className="h-12 rounded-xl border-2 border-gray-200 bg-white">
                     <SelectValue placeholder="Blok seçin" />
                   </SelectTrigger>
                   <SelectContent>
@@ -430,22 +467,20 @@ export default function EksikliklerPage() {
               </div>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="description">Açıklama</Label>
-              <Textarea
-                id="description"
-                value={formData.description}
-                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                placeholder="Eksiklik hakkında detaylı açıklama"
-                rows={4}
-              />
-            </div>
+            <ModernTextarea
+              label="Açıklama"
+              id="description"
+              value={formData.description}
+              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+              placeholder="Eksiklik hakkında detaylı açıklama"
+              rows={4}
+            />
 
-            <DialogFooter>
-              <Button type="button" variant="outline" onClick={() => setIsDialogOpen(false)}>
+            <DialogFooter className="gap-2 mt-4">
+              <ModernButton type="button" variant="ghost" onClick={() => setIsDialogOpen(false)}>
                 İptal
-              </Button>
-              <Button type="submit">Ekle</Button>
+              </ModernButton>
+              <ModernButton type="submit">Ekle</ModernButton>
             </DialogFooter>
           </form>
         </DialogContent>

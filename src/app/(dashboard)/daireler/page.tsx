@@ -1,0 +1,551 @@
+"use client"
+
+import { useState, useEffect } from "react"
+import {
+  Plus,
+  Home,
+  MoreHorizontal,
+  Pencil,
+  Trash2,
+  Search,
+  Building2,
+  Building,
+  Layers,
+  Eye,
+  User,
+  Key
+} from "lucide-react"
+import { ModernButton } from "@/components/ui/modern-button"
+import { ModernCard } from "@/components/ui/modern-card"
+import { ModernBadge } from "@/components/ui/modern-badge"
+import { ModernInput } from "@/components/ui/modern-input"
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import { Loading } from "@/components/ui/loading"
+
+interface Apartment {
+  id: string
+  number: string
+  floorId: string
+  floor: {
+    name: string
+    block: {
+      id: string
+      name: string
+      site: {
+        id: string
+        name: string
+      }
+    }
+  }
+  tenant: { name: string } | null
+  owner: { name: string } | null
+  status: string
+  type: string
+}
+
+interface Site {
+  id: string
+  name: string
+}
+
+interface Block {
+  id: string
+  name: string
+}
+
+interface Floor {
+  id: string
+  name: string
+}
+
+const statusVariants: Record<string, "success" | "warning" | "danger" | "secondary"> = {
+  OCCUPIED: "success",
+  EMPTY: "secondary",
+  MAINTENANCE: "warning",
+  RESERVED: "danger",
+}
+
+const statusLabels: Record<string, string> = {
+  OCCUPIED: "Dolu",
+  EMPTY: "Boş",
+  MAINTENANCE: "Tadilat",
+  RESERVED: "Rezerve",
+}
+
+export default function DairelerPage() {
+  const [apartments, setApartments] = useState<Apartment[]>([])
+  const [filteredApartments, setFilteredApartments] = useState<Apartment[]>([])
+  const [sites, setSites] = useState<Site[]>([])
+  const [blocks, setBlocks] = useState<Block[]>([])
+  const [floors, setFloors] = useState<Floor[]>([])
+  
+  const [isLoading, setIsLoading] = useState(true)
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
+  const [editingApartment, setEditingApartment] = useState<Apartment | null>(null)
+  const [searchQuery, setSearchQuery] = useState("")
+  const [filterSiteId, setFilterSiteId] = useState<string>("all")
+  const [filterBlockId, setFilterBlockId] = useState<string>("all")
+
+  const [formData, setFormData] = useState({
+    number: "",
+    floorId: "",
+    status: "EMPTY",
+    type: "2+1",
+    siteId: "",
+    blockId: "",
+  })
+
+  useEffect(() => {
+    fetchApartments()
+    fetchSites()
+  }, [])
+
+  useEffect(() => {
+    const filtered = apartments.filter(apt => {
+      const matchesSearch = apt.number.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                          apt.floor.block.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                          apt.floor.block.site.name.toLowerCase().includes(searchQuery.toLowerCase())
+      
+      const matchesSite = filterSiteId === "all" || apt.floor.block.site.id === filterSiteId
+      const matchesBlock = filterBlockId === "all" || apt.floor.block.id === filterBlockId
+      
+      return matchesSearch && matchesSite && matchesBlock
+    })
+    setFilteredApartments(filtered)
+  }, [searchQuery, filterSiteId, filterBlockId, apartments])
+
+  const fetchApartments = async () => {
+    try {
+      const res = await fetch("/api/apartments")
+      const data = await res.json()
+      setApartments(data)
+      setFilteredApartments(data)
+    } catch (error) {
+      console.error("Error fetching apartments:", error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const fetchSites = async () => {
+    try {
+      const res = await fetch("/api/sites")
+      const data = await res.json()
+      setSites(data)
+    } catch (error) {
+      console.error("Error fetching sites:", error)
+    }
+  }
+
+  const fetchBlocks = async (siteId: string) => {
+    try {
+      const res = await fetch(`/api/blocks?siteId=${siteId}`)
+      const data = await res.json()
+      setBlocks(data)
+    } catch (error) {
+      console.error("Error fetching blocks:", error)
+    }
+  }
+
+  const fetchFloors = async (blockId: string) => {
+    try {
+      const res = await fetch(`/api/floors?blockId=${blockId}`)
+      const data = await res.json()
+      setFloors(data)
+    } catch (error) {
+      console.error("Error fetching floors:", error)
+    }
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    try {
+      const url = editingApartment ? `/api/apartments/${editingApartment.id}` : "/api/apartments"
+      const method = editingApartment ? "PUT" : "POST"
+
+      const res = await fetch(url, {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          number: formData.number,
+          floorId: formData.floorId,
+          status: formData.status,
+          type: formData.type,
+        }),
+      })
+
+      if (res.ok) {
+        fetchApartments()
+        setIsDialogOpen(false)
+        resetForm()
+      }
+    } catch (error) {
+      console.error("Error saving apartment:", error)
+    }
+  }
+
+  const handleDelete = async (id: string) => {
+    if (!confirm("Bu daireyi silmek istediğinize emin misiniz?")) return
+    try {
+      await fetch(`/api/apartments/${id}`, { method: "DELETE" })
+      fetchApartments()
+    } catch (error) {
+      console.error("Error deleting apartment:", error)
+    }
+  }
+
+  const openEditDialog = (apt: Apartment) => {
+    setEditingApartment(apt)
+    setFormData({
+      number: apt.number,
+      floorId: apt.floorId,
+      status: apt.status,
+      type: apt.type,
+      siteId: apt.floor.block.site.id,
+      blockId: apt.floor.block.id,
+    })
+    
+    // Fetch dependencies
+    fetchBlocks(apt.floor.block.site.id)
+    fetchFloors(apt.floor.block.id)
+    
+    setIsDialogOpen(true)
+  }
+
+  const resetForm = () => {
+    setEditingApartment(null)
+    setFormData({
+      number: "",
+      floorId: "",
+      status: "EMPTY",
+      type: "2+1",
+      siteId: "",
+      blockId: "",
+    })
+    setBlocks([])
+    setFloors([])
+  }
+
+  if (isLoading) {
+    return <Loading className="min-h-[400px]" size="lg" />
+  }
+
+  return (
+    <div className="space-y-8 animate-fade-in">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">Daireler</h1>
+          <p className="text-gray-500 mt-1 text-lg">Tüm daireleri görüntüleyin ve yönetin</p>
+        </div>
+        <ModernButton onClick={() => { resetForm(); setIsDialogOpen(true); }} icon={<Plus className="w-5 h-5" />}>
+          Yeni Daire
+        </ModernButton>
+      </div>
+
+      {/* Filters */}
+      <ModernCard padding="md" className="bg-white/80 backdrop-blur-sm">
+        <div className="flex flex-col md:flex-row gap-4">
+          <div className="flex-1">
+            <ModernInput
+              placeholder="Daire no, blok veya site ara..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              icon={<Search className="w-5 h-5" />}
+              className="bg-white"
+            />
+          </div>
+          <div className="flex gap-4 w-full md:w-auto">
+            <div className="w-full md:w-48">
+              <Select value={filterSiteId} onValueChange={(value) => {
+                setFilterSiteId(value)
+                setFilterBlockId("all")
+                if (value !== "all") fetchBlocks(value)
+                else setBlocks([])
+              }}>
+                <SelectTrigger className="h-12 rounded-xl border-2 border-gray-200 bg-white focus:ring-2 focus:ring-primary-500">
+                  <div className="flex items-center gap-2">
+                    <Building2 className="w-4 h-4 text-gray-500" />
+                    <SelectValue placeholder="Site Filtrele" />
+                  </div>
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Tüm Siteler</SelectItem>
+                  {sites.map((site) => (
+                    <SelectItem key={site.id} value={site.id}>{site.name}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="w-full md:w-48">
+              <Select value={filterBlockId} onValueChange={setFilterBlockId} disabled={filterSiteId === "all"}>
+                <SelectTrigger className="h-12 rounded-xl border-2 border-gray-200 bg-white focus:ring-2 focus:ring-primary-500">
+                  <div className="flex items-center gap-2">
+                    <Building className="w-4 h-4 text-gray-500" />
+                    <SelectValue placeholder="Blok Filtrele" />
+                  </div>
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Tüm Bloklar</SelectItem>
+                  {blocks.map((block) => (
+                    <SelectItem key={block.id} value={block.id}>{block.name}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+        </div>
+      </ModernCard>
+
+      {filteredApartments.length === 0 ? (
+        <ModernCard className="flex flex-col items-center justify-center py-16 text-center" variant="bordered">
+          <div className="p-4 rounded-full bg-blue-50 mb-4">
+            <Home className="h-12 w-12 text-blue-400" />
+          </div>
+          <h3 className="text-xl font-semibold text-gray-900">Daire bulunamadı</h3>
+          <p className="text-gray-500 mt-2 max-w-sm mx-auto">
+            Henüz kayıtlı daire yok veya filtrelerinize uygun sonuç bulunamadı.
+          </p>
+          <div className="mt-6">
+            <ModernButton onClick={() => setIsDialogOpen(true)} variant="secondary">
+              <Plus className="h-4 w-4 mr-2" />
+              Daire Ekle
+            </ModernButton>
+          </div>
+        </ModernCard>
+      ) : (
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {filteredApartments.map((apt) => (
+            <ModernCard key={apt.id} hover padding="none" className="overflow-hidden group">
+              <div className={`h-24 bg-gradient-to-br ${
+                apt.status === 'OCCUPIED' ? 'from-green-500 to-emerald-600' :
+                apt.status === 'EMPTY' ? 'from-gray-400 to-gray-500' :
+                apt.status === 'MAINTENANCE' ? 'from-yellow-400 to-orange-500' :
+                'from-red-400 to-pink-500'
+              } relative`}>
+                <div className="absolute top-4 right-4 z-10">
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <button className="p-2 rounded-full bg-white/20 hover:bg-white/30 text-white backdrop-blur-sm transition-colors">
+                        <MoreHorizontal className="h-5 w-5" />
+                      </button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem onClick={() => openEditDialog(apt)}>
+                        <Pencil className="h-4 w-4 mr-2" />
+                        Düzenle
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        className="text-red-600 focus:text-red-600 focus:bg-red-50"
+                        onClick={() => handleDelete(apt.id)}
+                      >
+                        <Trash2 className="h-4 w-4 mr-2" />
+                        Sil
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
+                <div className="absolute -bottom-6 left-6">
+                  <div className="p-3 rounded-xl bg-white shadow-md border border-gray-100">
+                    <Home className={`h-8 w-8 ${
+                      apt.status === 'OCCUPIED' ? 'text-green-600' :
+                      apt.status === 'EMPTY' ? 'text-gray-500' :
+                      apt.status === 'MAINTENANCE' ? 'text-yellow-500' :
+                      'text-red-500'
+                    }`} />
+                  </div>
+                </div>
+              </div>
+              
+              <div className="pt-10 px-6 pb-6">
+                <div className="flex justify-between items-start">
+                  <div>
+                    <h3 className="text-xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors">
+                      Daire {apt.number}
+                    </h3>
+                    <div className="flex items-center gap-1.5 mt-1 text-sm text-gray-500">
+                      <Building2 className="h-3.5 w-3.5" />
+                      {apt.floor.block.site.name}
+                    </div>
+                    <div className="flex items-center gap-1.5 mt-0.5 text-sm text-gray-500">
+                      <Building className="h-3.5 w-3.5" />
+                      {apt.floor.block.name} - {apt.floor.name}
+                    </div>
+                  </div>
+                  <ModernBadge variant={statusVariants[apt.status]} size="sm">
+                    {statusLabels[apt.status]}
+                  </ModernBadge>
+                </div>
+
+                <div className="mt-6 space-y-3">
+                  <div className="flex items-center justify-between p-2.5 rounded-lg bg-gray-50 border border-gray-100">
+                    <div className="flex items-center gap-2 text-gray-500">
+                      <Layers className="h-4 w-4" />
+                      <span className="text-xs font-medium">Tip</span>
+                    </div>
+                    <span className="text-sm font-semibold text-gray-900">{apt.type}</span>
+                  </div>
+
+                  <div className="flex items-center justify-between p-2.5 rounded-lg bg-gray-50 border border-gray-100">
+                    <div className="flex items-center gap-2 text-gray-500">
+                      <User className="h-4 w-4" />
+                      <span className="text-xs font-medium">Sakin</span>
+                    </div>
+                    <span className="text-sm font-semibold text-gray-900 truncate max-w-[100px]">
+                      {apt.tenant?.name || apt.owner?.name || "-"}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </ModernCard>
+          ))}
+        </div>
+      )}
+
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogContent className="max-w-md p-0 overflow-hidden bg-white/95 backdrop-blur-xl border border-white/20 shadow-2xl">
+          <DialogHeader className="p-6 bg-gradient-to-r from-gray-50 to-white border-b border-gray-100">
+            <DialogTitle className="text-xl font-bold text-gray-900">
+              {editingApartment ? "Daireyi Düzenle" : "Yeni Daire Ekle"}
+            </DialogTitle>
+          </DialogHeader>
+          <form onSubmit={handleSubmit} className="p-6 space-y-4">
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <label className="text-sm font-semibold text-gray-700">Site *</label>
+                <Select
+                  value={formData.siteId}
+                  onValueChange={(value) => {
+                    setFormData({ ...formData, siteId: value, blockId: "", floorId: "" })
+                    fetchBlocks(value)
+                  }}
+                >
+                  <SelectTrigger className="h-12 rounded-xl border-2 border-gray-200 bg-white">
+                    <SelectValue placeholder="Site seçin" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {sites.map((site) => (
+                      <SelectItem key={site.id} value={site.id}>{site.name}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-semibold text-gray-700">Blok *</label>
+                <Select
+                  value={formData.blockId}
+                  onValueChange={(value) => {
+                    setFormData({ ...formData, blockId: value, floorId: "" })
+                    fetchFloors(value)
+                  }}
+                  disabled={!formData.siteId}
+                >
+                  <SelectTrigger className="h-12 rounded-xl border-2 border-gray-200 bg-white">
+                    <SelectValue placeholder="Blok seçin" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {blocks.map((block) => (
+                      <SelectItem key={block.id} value={block.id}>{block.name}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <label className="text-sm font-semibold text-gray-700">Kat *</label>
+                <Select
+                  value={formData.floorId}
+                  onValueChange={(value) => setFormData({ ...formData, floorId: value })}
+                  disabled={!formData.blockId}
+                >
+                  <SelectTrigger className="h-12 rounded-xl border-2 border-gray-200 bg-white">
+                    <SelectValue placeholder="Kat seçin" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {floors.map((floor) => (
+                      <SelectItem key={floor.id} value={floor.id}>{floor.name}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <ModernInput
+                label="Daire No *"
+                value={formData.number}
+                onChange={(e) => setFormData({ ...formData, number: e.target.value })}
+                placeholder="Örn: 12"
+                required
+              />
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <label className="text-sm font-semibold text-gray-700">Tip</label>
+                <Select
+                  value={formData.type}
+                  onValueChange={(value) => setFormData({ ...formData, type: value })}
+                >
+                  <SelectTrigger className="h-12 rounded-xl border-2 border-gray-200 bg-white">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="1+0">1+0</SelectItem>
+                    <SelectItem value="1+1">1+1</SelectItem>
+                    <SelectItem value="2+1">2+1</SelectItem>
+                    <SelectItem value="3+1">3+1</SelectItem>
+                    <SelectItem value="4+1">4+1</SelectItem>
+                    <SelectItem value="Dubleks">Dubleks</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-semibold text-gray-700">Durum</label>
+                <Select
+                  value={formData.status}
+                  onValueChange={(value) => setFormData({ ...formData, status: value })}
+                >
+                  <SelectTrigger className="h-12 rounded-xl border-2 border-gray-200 bg-white">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {Object.entries(statusLabels).map(([value, label]) => (
+                      <SelectItem key={value} value={value}>{label}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+
+            <DialogFooter className="gap-2 mt-4">
+              <ModernButton type="button" variant="ghost" onClick={() => setIsDialogOpen(false)}>
+                İptal
+              </ModernButton>
+              <ModernButton type="submit">
+                {editingApartment ? "Güncelle" : "Ekle"}
+              </ModernButton>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
+    </div>
+  )
+}

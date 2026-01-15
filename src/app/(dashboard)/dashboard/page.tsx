@@ -2,24 +2,17 @@
 
 import { useSession } from "next-auth/react"
 import { ModernCard } from "@/components/ui/modern-card"
-import { ModernButton } from "@/components/ui/modern-button"
 import { ModernBadge } from "@/components/ui/modern-badge"
-import type { LucideIcon } from "lucide-react"
 import {
   Building2,
   Building,
   Home,
   AlertTriangle,
   Package,
-  Wrench,
   CheckCircle,
   Clock,
   TrendingUp,
   Users,
-  Plus,
-  ArrowUp,
-  ArrowDown,
-  MoreHorizontal,
 } from "lucide-react"
 
 const stats = [
@@ -29,7 +22,7 @@ const stats = [
     icon: Building2,
     change: "+0",
     changeType: "neutral",
-    variant: "primary"
+    variant: "primary" as const
   },
   {
     title: "Toplam Blok",
@@ -37,7 +30,7 @@ const stats = [
     icon: Building,
     change: "+2",
     changeType: "increase",
-    variant: "secondary"
+    variant: "secondary" as const
   },
   {
     title: "Toplam Daire",
@@ -45,7 +38,7 @@ const stats = [
     icon: Home,
     change: "+16",
     changeType: "increase",
-    variant: "success"
+    variant: "success" as const
   },
   {
     title: "Açık Eksiklik",
@@ -53,7 +46,7 @@ const stats = [
     icon: AlertTriangle,
     change: "-3",
     changeType: "decrease",
-    variant: "danger"
+    variant: "danger" as const
   },
   {
     title: "Demirbaş",
@@ -61,7 +54,7 @@ const stats = [
     icon: Package,
     change: "+12",
     changeType: "increase",
-    variant: "warning"
+    variant: "warning" as const
   },
   {
     title: "Personel",
@@ -69,7 +62,7 @@ const stats = [
     icon: Users,
     change: "+1",
     changeType: "increase",
-    variant: "info"
+    variant: "info" as const
   }
 ]
 
@@ -104,18 +97,18 @@ const recentIssues = [
   },
 ]
 
-const priorityColors: Record<string, string> = {
-  LOW: "bg-gray-100 text-gray-700",
-  MEDIUM: "bg-blue-100 text-blue-700",
-  HIGH: "bg-orange-100 text-orange-700",
-  URGENT: "bg-red-100 text-red-700",
+const priorityVariants: Record<string, "primary" | "secondary" | "success" | "warning" | "danger" | "info"> = {
+  LOW: "secondary",
+  MEDIUM: "info",
+  HIGH: "warning",
+  URGENT: "danger",
 }
 
-const statusColors: Record<string, string> = {
-  OPEN: "bg-yellow-100 text-yellow-700",
-  IN_PROGRESS: "bg-blue-100 text-blue-700",
-  WAITING: "bg-purple-100 text-purple-700",
-  RESOLVED: "bg-green-100 text-green-700",
+const statusVariants: Record<string, "primary" | "secondary" | "success" | "warning" | "danger" | "info"> = {
+  OPEN: "warning",
+  IN_PROGRESS: "info",
+  WAITING: "secondary",
+  RESOLVED: "success",
 }
 
 const priorityLabels: Record<string, string> = {
@@ -136,128 +129,158 @@ export default function DashboardPage() {
   const { data: session } = useSession()
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8 animate-fade-in">
       {/* Header */}
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900">
-          Hoş Geldiniz, {session?.user?.name || "Kullanıcı"}
-        </h1>
-        <p className="text-gray-500 mt-1">
-          Site yönetim sistemi kontrol paneli
-        </p>
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">
+            Hoş Geldiniz, {session?.user?.name || "Kullanıcı"}
+          </h1>
+          <p className="text-gray-500 mt-1 text-lg">
+            Site yönetim sistemi kontrol paneli
+          </p>
+        </div>
+        <div className="flex items-center gap-2 text-sm text-gray-500 bg-white px-4 py-2 rounded-full shadow-sm border border-gray-100">
+          <Clock className="w-4 h-4" />
+          {new Date().toLocaleDateString('tr-TR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+        </div>
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6">
         {stats.map((stat) => (
-          <Card key={stat.title} className="hover:shadow-md transition-shadow">
-            <CardContent className="p-4">
-              <div className="flex items-center gap-3">
-                <div className={`p-2 rounded-lg ${stat.bgColor}`}>
-                  <stat.icon className={`h-5 w-5 ${stat.color}`} />
-                </div>
-                <div>
-                  <p className="text-2xl font-bold text-gray-900">{stat.value}</p>
-                  <p className="text-xs text-gray-500">{stat.title}</p>
-                </div>
+          <ModernCard key={stat.title} hover padding="lg" className="border-t-4" style={{ borderColor: `var(--${stat.variant}-500)` }}>
+            <div className="flex items-start justify-between mb-4">
+              <div className={`p-3 rounded-2xl bg-${stat.variant === 'primary' ? 'blue' : stat.variant === 'secondary' ? 'slate' : stat.variant === 'success' ? 'green' : stat.variant === 'danger' ? 'red' : stat.variant === 'warning' ? 'yellow' : 'cyan'}-50`}>
+                <stat.icon className={`h-6 w-6 text-${stat.variant === 'primary' ? 'blue' : stat.variant === 'secondary' ? 'slate' : stat.variant === 'success' ? 'green' : stat.variant === 'danger' ? 'red' : stat.variant === 'warning' ? 'yellow' : 'cyan'}-600`} />
               </div>
-            </CardContent>
-          </Card>
+              <ModernBadge 
+                variant={stat.changeType === 'increase' ? 'success' : stat.changeType === 'decrease' ? 'danger' : 'secondary'} 
+                size="sm"
+              >
+                {stat.change}
+              </ModernBadge>
+            </div>
+            <div>
+              <p className="text-3xl font-bold text-gray-900 tracking-tight">{stat.value}</p>
+              <p className="text-sm font-medium text-gray-500 mt-1">{stat.title}</p>
+            </div>
+          </ModernCard>
         ))}
       </div>
 
       {/* Main Content Grid */}
-      <div className="grid lg:grid-cols-2 gap-6">
+      <div className="grid lg:grid-cols-3 gap-8">
         {/* Recent Issues */}
-        <Card>
-          <CardHeader className="pb-3">
-            <div className="flex items-center justify-between">
-              <CardTitle className="text-lg">Son Eksiklikler</CardTitle>
-              <Badge variant="secondary" className="font-normal">
-                12 açık
-              </Badge>
+        <div className="lg:col-span-2">
+          <ModernCard className="h-full">
+            <div className="flex items-center justify-between mb-6">
+              <div>
+                <h2 className="text-xl font-bold text-gray-900">Son Eksiklikler</h2>
+                <p className="text-sm text-gray-500">Takip edilen son arıza ve eksiklikler</p>
+              </div>
+              <ModernBadge variant="secondary" size="lg">
+                12 açık kayıt
+              </ModernBadge>
             </div>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-3">
+            <div className="space-y-4">
               {recentIssues.map((issue) => (
                 <div
                   key={issue.id}
-                  className="flex items-center justify-between p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors cursor-pointer"
+                  className="group flex items-center justify-between p-4 rounded-xl bg-gray-50/50 hover:bg-white hover:shadow-md hover:scale-[1.01] border border-transparent hover:border-gray-100 transition-all duration-200 cursor-pointer"
                 >
-                  <div className="flex-1 min-w-0">
-                    <p className="font-medium text-gray-900 truncate">
-                      {issue.title}
-                    </p>
-                    <p className="text-sm text-gray-500">{issue.createdAt}</p>
+                  <div className="flex items-center gap-4">
+                    <div className={`w-2 h-12 rounded-full ${
+                      issue.priority === 'URGENT' ? 'bg-red-500' :
+                      issue.priority === 'HIGH' ? 'bg-orange-500' :
+                      issue.priority === 'MEDIUM' ? 'bg-blue-500' : 'bg-gray-400'
+                    }`} />
+                    <div>
+                      <p className="font-semibold text-gray-900 group-hover:text-primary-600 transition-colors">
+                        {issue.title}
+                      </p>
+                      <div className="flex items-center gap-2 mt-1">
+                        <Clock className="w-3 h-3 text-gray-400" />
+                        <p className="text-xs text-gray-500">{issue.createdAt}</p>
+                      </div>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-2 ml-4">
-                    <Badge className={priorityColors[issue.priority]}>
+                  <div className="flex items-center gap-3">
+                    <ModernBadge variant={priorityVariants[issue.priority]} size="sm">
                       {priorityLabels[issue.priority]}
-                    </Badge>
-                    <Badge className={statusColors[issue.status]}>
+                    </ModernBadge>
+                    <ModernBadge variant={statusVariants[issue.status]} size="sm">
                       {statusLabels[issue.status]}
-                    </Badge>
+                    </ModernBadge>
                   </div>
                 </div>
               ))}
             </div>
-          </CardContent>
-        </Card>
+          </ModernCard>
+        </div>
 
-        {/* Quick Stats */}
-        <Card>
-          <CardHeader className="pb-3">
-            <CardTitle className="text-lg">Haftalık Özet</CardTitle>
-          </CardHeader>
-          <CardContent>
+        {/* Quick Stats / Summary */}
+        <div className="lg:col-span-1">
+          <ModernCard className="h-full bg-gradient-to-br from-white to-gray-50">
+            <div className="mb-6">
+              <h2 className="text-xl font-bold text-gray-900">Haftalık Özet</h2>
+              <p className="text-sm text-gray-500">Bu haftanın önemli metrikleri</p>
+            </div>
             <div className="space-y-4">
-              <div className="flex items-center justify-between p-4 rounded-lg bg-green-50">
-                <div className="flex items-center gap-3">
-                  <CheckCircle className="h-8 w-8 text-green-600" />
+              <div className="flex items-center justify-between p-5 rounded-2xl bg-white shadow-sm border border-gray-100">
+                <div className="flex items-center gap-4">
+                  <div className="p-3 rounded-xl bg-green-50 text-green-600">
+                    <CheckCircle className="h-6 w-6" />
+                  </div>
                   <div>
-                    <p className="font-semibold text-gray-900">Çözülen Sorunlar</p>
-                    <p className="text-sm text-gray-500">Bu hafta</p>
+                    <p className="font-semibold text-gray-900">Çözülen</p>
+                    <p className="text-xs text-gray-500">Bu hafta</p>
                   </div>
                 </div>
                 <span className="text-2xl font-bold text-green-600">8</span>
               </div>
 
-              <div className="flex items-center justify-between p-4 rounded-lg bg-yellow-50">
-                <div className="flex items-center gap-3">
-                  <Clock className="h-8 w-8 text-yellow-600" />
+              <div className="flex items-center justify-between p-5 rounded-2xl bg-white shadow-sm border border-gray-100">
+                <div className="flex items-center gap-4">
+                  <div className="p-3 rounded-xl bg-yellow-50 text-yellow-600">
+                    <Clock className="h-6 w-6" />
+                  </div>
                   <div>
-                    <p className="font-semibold text-gray-900">Bekleyen Bakımlar</p>
-                    <p className="text-sm text-gray-500">Önümüzdeki 7 gün</p>
+                    <p className="font-semibold text-gray-900">Bekleyen</p>
+                    <p className="text-xs text-gray-500">7 gün içinde</p>
                   </div>
                 </div>
                 <span className="text-2xl font-bold text-yellow-600">5</span>
               </div>
 
-              <div className="flex items-center justify-between p-4 rounded-lg bg-blue-50">
-                <div className="flex items-center gap-3">
-                  <TrendingUp className="h-8 w-8 text-blue-600" />
+              <div className="flex items-center justify-between p-5 rounded-2xl bg-white shadow-sm border border-gray-100">
+                <div className="flex items-center gap-4">
+                  <div className="p-3 rounded-xl bg-blue-50 text-blue-600">
+                    <TrendingUp className="h-6 w-6" />
+                  </div>
                   <div>
-                    <p className="font-semibold text-gray-900">Yeni Kayıtlar</p>
-                    <p className="text-sm text-gray-500">Bu ay eklenen demirbaş</p>
+                    <p className="font-semibold text-gray-900">Yeni Kayıt</p>
+                    <p className="text-xs text-gray-500">Bu ay</p>
                   </div>
                 </div>
                 <span className="text-2xl font-bold text-blue-600">12</span>
               </div>
 
-              <div className="flex items-center justify-between p-4 rounded-lg bg-purple-50">
-                <div className="flex items-center gap-3">
-                  <Users className="h-8 w-8 text-purple-600" />
+              <div className="flex items-center justify-between p-5 rounded-2xl bg-white shadow-sm border border-gray-100">
+                <div className="flex items-center gap-4">
+                  <div className="p-3 rounded-xl bg-purple-50 text-purple-600">
+                    <Users className="h-6 w-6" />
+                  </div>
                   <div>
-                    <p className="font-semibold text-gray-900">Aktif Kullanıcılar</p>
-                    <p className="text-sm text-gray-500">Sistemde kayıtlı</p>
+                    <p className="font-semibold text-gray-900">Aktif Üye</p>
+                    <p className="text-xs text-gray-500">Toplam</p>
                   </div>
                 </div>
                 <span className="text-2xl font-bold text-purple-600">4</span>
               </div>
             </div>
-          </CardContent>
-        </Card>
+          </ModernCard>
+        </div>
       </div>
     </div>
   )
