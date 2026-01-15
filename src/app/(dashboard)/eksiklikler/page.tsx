@@ -37,6 +37,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogFooter,
+  DialogDescription,
 } from "@/components/ui/dialog"
 import {
   DropdownMenu,
@@ -435,6 +436,9 @@ export default function EksikliklerPage() {
         <DialogContent className="max-w-lg p-0 overflow-hidden bg-slate-800/95 backdrop-blur-xl border border-white/20 shadow-2xl max-h-[90vh] overflow-y-auto">
           <DialogHeader className="p-6 bg-slate-800/50 border-b border-white/10">
             <DialogTitle className="text-xl font-bold text-white">Yeni Eksiklik Ekle</DialogTitle>
+            <DialogDescription className="text-slate-400">
+              Eksiklik veya arıza bilgilerini girin. Fotoğraf ve video ekleyebilirsiniz.
+            </DialogDescription>
           </DialogHeader>
           <form onSubmit={handleSubmit} className="p-6 space-y-4">
             <ModernInput
@@ -556,7 +560,6 @@ export default function EksikliklerPage() {
                     <SelectValue placeholder="Seçiniz" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">Atanmadı</SelectItem>
                     {users.map((user) => (
                       <SelectItem key={user.id} value={user.id}>{user.name}</SelectItem>
                     ))}
