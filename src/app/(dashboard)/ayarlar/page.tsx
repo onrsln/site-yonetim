@@ -62,8 +62,8 @@ export default function AyarlarPage() {
     <div className="space-y-8 animate-fade-in">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">Ayarlar</h1>
-          <p className="text-gray-500 mt-1 text-lg">Sistem ve hesap tercihlerinizi yapılandırın</p>
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">Ayarlar</h1>
+          <p className="text-slate-400 mt-1 text-lg">Sistem ve hesap tercihlerinizi yapılandırın</p>
         </div>
         <ModernButton onClick={handleSave} loading={isLoading} icon={<Save className="w-5 h-5" />}>
           Değişiklikleri Kaydet
@@ -71,20 +71,20 @@ export default function AyarlarPage() {
       </div>
 
       <Tabs defaultValue="account" className="space-y-6">
-        <TabsList className="bg-white/50 p-1 rounded-xl border border-gray-200">
-          <TabsTrigger value="account" className="data-[state=active]:bg-white data-[state=active]:shadow-sm rounded-lg px-4 py-2">
+        <TabsList className="bg-slate-800/50/50 p-1 rounded-xl border border-white/10">
+          <TabsTrigger value="account" className="data-[state=active]:bg-slate-800/50 data-[state=active]:shadow-sm rounded-lg px-4 py-2">
             <User className="w-4 h-4 mr-2" />
             Hesap
           </TabsTrigger>
-          <TabsTrigger value="notifications" className="data-[state=active]:bg-white data-[state=active]:shadow-sm rounded-lg px-4 py-2">
+          <TabsTrigger value="notifications" className="data-[state=active]:bg-slate-800/50 data-[state=active]:shadow-sm rounded-lg px-4 py-2">
             <Bell className="w-4 h-4 mr-2" />
             Bildirimler
           </TabsTrigger>
-          <TabsTrigger value="appearance" className="data-[state=active]:bg-white data-[state=active]:shadow-sm rounded-lg px-4 py-2">
+          <TabsTrigger value="appearance" className="data-[state=active]:bg-slate-800/50 data-[state=active]:shadow-sm rounded-lg px-4 py-2">
             <Palette className="w-4 h-4 mr-2" />
             Görünüm
           </TabsTrigger>
-          <TabsTrigger value="security" className="data-[state=active]:bg-white data-[state=active]:shadow-sm rounded-lg px-4 py-2">
+          <TabsTrigger value="security" className="data-[state=active]:bg-slate-800/50 data-[state=active]:shadow-sm rounded-lg px-4 py-2">
             <Shield className="w-4 h-4 mr-2" />
             Güvenlik
           </TabsTrigger>
@@ -118,9 +118,9 @@ export default function AyarlarPage() {
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <label className="text-sm font-medium text-gray-700">Dil</label>
+                      <label className="text-sm font-medium text-slate-200">Dil</label>
                       <Select defaultValue={settings.language} onValueChange={(v) => setSettings({...settings, language: v})}>
-                        <SelectTrigger className="bg-white">
+                        <SelectTrigger className="bg-slate-800/50">
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
@@ -130,9 +130,9 @@ export default function AyarlarPage() {
                       </Select>
                     </div>
                     <div className="space-y-2">
-                      <label className="text-sm font-medium text-gray-700">Saat Dilimi</label>
+                      <label className="text-sm font-medium text-slate-200">Saat Dilimi</label>
                       <Select defaultValue="europe-istanbul">
-                        <SelectTrigger className="bg-white">
+                        <SelectTrigger className="bg-slate-800/50">
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
@@ -150,30 +150,30 @@ export default function AyarlarPage() {
 
         <TabsContent value="notifications">
           <ModernCard title="Bildirim Tercihleri" className="space-y-6">
-            <div className="flex items-center justify-between p-4 rounded-xl bg-gray-50 border border-gray-100">
+            <div className="flex items-center justify-between p-4 rounded-xl bg-slate-800/30 border border-white/10">
               <div className="space-y-0.5">
-                <label className="text-base font-medium text-gray-900">E-posta Bildirimleri</label>
-                <p className="text-sm text-gray-500">Önemli güncellemeleri e-posta ile al</p>
+                <label className="text-base font-medium text-white">E-posta Bildirimleri</label>
+                <p className="text-sm text-slate-400">Önemli güncellemeleri e-posta ile al</p>
               </div>
               <Switch
                 checked={settings.emailNotifications}
                 onCheckedChange={(checked: boolean) => setSettings({...settings, emailNotifications: checked})}
               />
             </div>
-            <div className="flex items-center justify-between p-4 rounded-xl bg-gray-50 border border-gray-100">
+            <div className="flex items-center justify-between p-4 rounded-xl bg-slate-800/30 border border-white/10">
               <div className="space-y-0.5">
-                <label className="text-base font-medium text-gray-900">Push Bildirimleri</label>
-                <p className="text-sm text-gray-500">Tarayıcı üzerinden anlık bildirim al</p>
+                <label className="text-base font-medium text-white">Push Bildirimleri</label>
+                <p className="text-sm text-slate-400">Tarayıcı üzerinden anlık bildirim al</p>
               </div>
               <Switch
                 checked={settings.pushNotifications}
                 onCheckedChange={(checked: boolean) => setSettings({...settings, pushNotifications: checked})}
               />
             </div>
-            <div className="flex items-center justify-between p-4 rounded-xl bg-gray-50 border border-gray-100">
+            <div className="flex items-center justify-between p-4 rounded-xl bg-slate-800/30 border border-white/10">
               <div className="space-y-0.5">
-                <label className="text-base font-medium text-gray-900">Haftalık Rapor</label>
-                <p className="text-sm text-gray-500">Haftalık özet raporunu pazar günleri al</p>
+                <label className="text-base font-medium text-white">Haftalık Rapor</label>
+                <p className="text-sm text-slate-400">Haftalık özet raporunu pazar günleri al</p>
               </div>
               <Switch
                 checked={settings.weeklyReport}
@@ -189,23 +189,23 @@ export default function AyarlarPage() {
               <div className="grid grid-cols-3 gap-4">
                 <button
                   onClick={() => setSettings({...settings, theme: 'light'})}
-                  className={`flex flex-col items-center gap-3 p-4 rounded-xl border-2 transition-all ${settings.theme === 'light' ? 'border-blue-500 bg-blue-50' : 'border-gray-200 hover:border-gray-300'}`}
+                  className={`flex flex-col items-center gap-3 p-4 rounded-xl border-2 transition-all ${settings.theme === 'light' ? 'border-blue-500 bg-blue-50' : 'border-white/10 hover:border-white/20'}`}
                 >
                   <Sun className="w-8 h-8 text-orange-500" />
                   <span className="font-medium">Açık</span>
                 </button>
                 <button
                   onClick={() => setSettings({...settings, theme: 'dark'})}
-                  className={`flex flex-col items-center gap-3 p-4 rounded-xl border-2 transition-all ${settings.theme === 'dark' ? 'border-blue-500 bg-blue-50' : 'border-gray-200 hover:border-gray-300'}`}
+                  className={`flex flex-col items-center gap-3 p-4 rounded-xl border-2 transition-all ${settings.theme === 'dark' ? 'border-blue-500 bg-blue-50' : 'border-white/10 hover:border-white/20'}`}
                 >
                   <Moon className="w-8 h-8 text-indigo-500" />
                   <span className="font-medium">Koyu</span>
                 </button>
                 <button
                   onClick={() => setSettings({...settings, theme: 'system'})}
-                  className={`flex flex-col items-center gap-3 p-4 rounded-xl border-2 transition-all ${settings.theme === 'system' ? 'border-blue-500 bg-blue-50' : 'border-gray-200 hover:border-gray-300'}`}
+                  className={`flex flex-col items-center gap-3 p-4 rounded-xl border-2 transition-all ${settings.theme === 'system' ? 'border-blue-500 bg-blue-50' : 'border-white/10 hover:border-white/20'}`}
                 >
-                  <Monitor className="w-8 h-8 text-gray-500" />
+                  <Monitor className="w-8 h-8 text-slate-400" />
                   <span className="font-medium">Sistem</span>
                 </button>
               </div>
@@ -217,10 +217,10 @@ export default function AyarlarPage() {
           <div className="space-y-6">
             <ModernCard title="Güvenlik Ayarları">
               <div className="space-y-6">
-                <div className="flex items-center justify-between p-4 rounded-xl bg-gray-50 border border-gray-100">
+                <div className="flex items-center justify-between p-4 rounded-xl bg-slate-800/30 border border-white/10">
                   <div className="space-y-0.5">
-                    <label className="text-base font-medium text-gray-900">İki Faktörlü Doğrulama (2FA)</label>
-                    <p className="text-sm text-gray-500">Hesabınız için ek güvenlik katmanı</p>
+                    <label className="text-base font-medium text-white">İki Faktörlü Doğrulama (2FA)</label>
+                    <p className="text-sm text-slate-400">Hesabınız için ek güvenlik katmanı</p>
                   </div>
                   <Switch
                     checked={settings.twoFactorAuth}
@@ -228,8 +228,8 @@ export default function AyarlarPage() {
                   />
                 </div>
                 
-                <div className="space-y-4 pt-4 border-t border-gray-100">
-                  <h3 className="font-medium text-gray-900">Şifre Değiştir</h3>
+                <div className="space-y-4 pt-4 border-t border-white/10">
+                  <h3 className="font-medium text-white">Şifre Değiştir</h3>
                   <div className="grid gap-4 max-w-md">
                     <ModernInput
                       type="password"
@@ -257,11 +257,11 @@ export default function AyarlarPage() {
             <ModernCard title="Oturum Ayarları">
               <div className="flex items-center justify-between">
                 <div className="space-y-0.5">
-                  <label className="text-base font-medium text-gray-900">Otomatik Oturum Kapatma</label>
-                  <p className="text-sm text-gray-500">Hareketsiz kaldıktan sonra oturumu sonlandır</p>
+                  <label className="text-base font-medium text-white">Otomatik Oturum Kapatma</label>
+                  <p className="text-sm text-slate-400">Hareketsiz kaldıktan sonra oturumu sonlandır</p>
                 </div>
                 <Select defaultValue={settings.sessionTimeout} onValueChange={(v) => setSettings({...settings, sessionTimeout: v})}>
-                  <SelectTrigger className="w-32 bg-white">
+                  <SelectTrigger className="w-32 bg-slate-800/50">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>

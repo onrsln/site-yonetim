@@ -118,8 +118,8 @@ export default function BakimPage() {
     <div className="space-y-8 animate-fade-in">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">Bakım Yönetimi</h1>
-          <p className="text-gray-500 mt-1 text-lg">Periyodik bakım ve onarım işlemlerini takip edin</p>
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">Bakım Yönetimi</h1>
+          <p className="text-slate-400 mt-1 text-lg">Periyodik bakım ve onarım işlemlerini takip edin</p>
         </div>
         <ModernButton onClick={() => setIsDialogOpen(true)} icon={<Plus className="w-5 h-5" />}>
           Yeni Bakım Kaydı
@@ -127,7 +127,7 @@ export default function BakimPage() {
       </div>
 
       {/* Filters */}
-      <ModernCard padding="md" className="bg-white/80 backdrop-blur-sm">
+      <ModernCard padding="md" className="bg-slate-800/50/80 backdrop-blur-sm">
         <div className="flex flex-col md:flex-row gap-4">
           <div className="flex-1">
             <ModernInput
@@ -135,14 +135,14 @@ export default function BakimPage() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               icon={<Search className="w-5 h-5" />}
-              className="bg-white"
+              className="bg-slate-800/50"
             />
           </div>
           <div className="w-full md:w-64">
             <Select value={filterStatus} onValueChange={setFilterStatus}>
-              <SelectTrigger className="h-12 rounded-xl border-2 border-gray-200 bg-white focus:ring-2 focus:ring-primary-500">
+              <SelectTrigger className="h-12 rounded-xl border-2 border-white/10 bg-slate-800/50 focus:ring-2 focus:ring-primary-500">
                 <div className="flex items-center gap-2">
-                  <Filter className="w-4 h-4 text-gray-500" />
+                  <Filter className="w-4 h-4 text-slate-400" />
                   <SelectValue placeholder="Durum Filtrele" />
                 </div>
               </SelectTrigger>
@@ -171,18 +171,18 @@ export default function BakimPage() {
                   <ModernBadge variant={statusVariants[item.status]} size="sm">
                     {statusLabels[item.status]}
                   </ModernBadge>
-                  <span className="text-xs font-medium px-2 py-1 rounded-md bg-gray-100 text-gray-600 border border-gray-200">
+                  <span className="text-xs font-medium px-2 py-1 rounded-md bg-slate-800/50 text-slate-300 border border-white/10">
                     {typeLabels[item.type]}
                   </span>
                 </div>
                 
-                <h3 className="text-lg font-bold text-gray-900 group-hover:text-primary-600 transition-colors">
+                <h3 className="text-lg font-bold text-white group-hover:text-primary-600 transition-colors">
                   {item.title}
                 </h3>
                 
-                <p className="text-sm text-gray-500 mt-1">{item.description}</p>
+                <p className="text-sm text-slate-400 mt-1">{item.description}</p>
 
-                <div className="flex flex-wrap items-center gap-4 mt-3 text-sm text-gray-500">
+                <div className="flex flex-wrap items-center gap-4 mt-3 text-sm text-slate-400">
                   <div className="flex items-center gap-1.5">
                     <Building2 className="h-4 w-4" />
                     {item.site}
@@ -195,16 +195,16 @@ export default function BakimPage() {
                     <Calendar className="h-4 w-4" />
                     {new Date(item.date).toLocaleDateString('tr-TR')}
                   </div>
-                  <div className="flex items-center gap-1.5 font-medium text-gray-900">
+                  <div className="flex items-center gap-1.5 font-medium text-white">
                     ₺{item.cost.toLocaleString('tr-TR')}
                   </div>
                 </div>
               </div>
 
-              <div className="flex items-center gap-2 md:self-center pt-4 md:pt-0 border-t md:border-t-0 border-gray-100">
+              <div className="flex items-center gap-2 md:self-center pt-4 md:pt-0 border-t md:border-t-0 border-white/10">
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <button className="p-2 rounded-xl hover:bg-gray-100 text-gray-400 hover:text-gray-600 transition-colors">
+                    <button className="p-2 rounded-xl hover:bg-slate-800/50 text-slate-500 hover:text-slate-300 transition-colors">
                       <MoreHorizontal className="h-5 w-5" />
                     </button>
                   </DropdownMenuTrigger>
@@ -226,9 +226,9 @@ export default function BakimPage() {
       </div>
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="max-w-lg p-0 overflow-hidden bg-white/95 backdrop-blur-xl border border-white/20 shadow-2xl">
-          <DialogHeader className="p-6 bg-gradient-to-r from-gray-50 to-white border-b border-gray-100">
-            <DialogTitle className="text-xl font-bold text-gray-900">Yeni Bakım Kaydı</DialogTitle>
+        <DialogContent className="max-w-lg p-0 overflow-hidden bg-slate-800/50/95 backdrop-blur-xl border border-white/20 shadow-2xl">
+          <DialogHeader className="p-6 bg-gradient-to-r from-gray-50 to-white border-b border-white/10">
+            <DialogTitle className="text-xl font-bold text-white">Yeni Bakım Kaydı</DialogTitle>
           </DialogHeader>
           <div className="p-6 space-y-4">
             <ModernInput
@@ -238,9 +238,9 @@ export default function BakimPage() {
             
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <label className="text-sm font-semibold text-gray-700">İşlem Türü</label>
+                <label className="text-sm font-semibold text-slate-200">İşlem Türü</label>
                 <Select defaultValue="PERIODIC">
-                  <SelectTrigger className="h-12 rounded-xl border-2 border-gray-200 bg-white">
+                  <SelectTrigger className="h-12 rounded-xl border-2 border-white/10 bg-slate-800/50">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -251,9 +251,9 @@ export default function BakimPage() {
                 </Select>
               </div>
               <div className="space-y-2">
-                <label className="text-sm font-semibold text-gray-700">Durum</label>
+                <label className="text-sm font-semibold text-slate-200">Durum</label>
                 <Select defaultValue="SCHEDULED">
-                  <SelectTrigger className="h-12 rounded-xl border-2 border-gray-200 bg-white">
+                  <SelectTrigger className="h-12 rounded-xl border-2 border-white/10 bg-slate-800/50">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>

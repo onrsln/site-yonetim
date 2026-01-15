@@ -241,8 +241,8 @@ export default function DemirbaslarPage() {
     <div className="space-y-8 animate-fade-in">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">Demirbaşlar</h1>
-          <p className="text-gray-500 mt-1 text-lg">Tüm demirbaş envanterini yönetin</p>
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">Demirbaşlar</h1>
+          <p className="text-slate-400 mt-1 text-lg">Tüm demirbaş envanterini yönetin</p>
         </div>
         <ModernButton onClick={() => { resetForm(); setIsDialogOpen(true); }} icon={<Plus className="w-5 h-5" />}>
           Yeni Demirbaş
@@ -250,7 +250,7 @@ export default function DemirbaslarPage() {
       </div>
 
       {/* Filters */}
-      <ModernCard padding="md" className="bg-white/80 backdrop-blur-sm">
+      <ModernCard padding="md" className="bg-slate-800/50/80 backdrop-blur-sm">
         <div className="flex flex-col md:flex-row gap-4">
           <div className="flex-1">
             <ModernInput
@@ -258,15 +258,15 @@ export default function DemirbaslarPage() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               icon={<Search className="w-5 h-5" />}
-              className="bg-white"
+              className="bg-slate-800/50"
             />
           </div>
           <div className="flex gap-4 w-full md:w-auto">
             <div className="w-full md:w-48">
               <Select value={filterSiteId} onValueChange={setFilterSiteId}>
-                <SelectTrigger className="h-12 rounded-xl border-2 border-gray-200 bg-white focus:ring-2 focus:ring-primary-500">
+                <SelectTrigger className="h-12 rounded-xl border-2 border-white/10 bg-slate-800/50 focus:ring-2 focus:ring-primary-500">
                   <div className="flex items-center gap-2">
-                    <Building2 className="w-4 h-4 text-gray-500" />
+                    <Building2 className="w-4 h-4 text-slate-400" />
                     <SelectValue placeholder="Site Filtrele" />
                   </div>
                 </SelectTrigger>
@@ -280,9 +280,9 @@ export default function DemirbaslarPage() {
             </div>
             <div className="w-full md:w-48">
               <Select value={filterCategory} onValueChange={setFilterCategory}>
-                <SelectTrigger className="h-12 rounded-xl border-2 border-gray-200 bg-white focus:ring-2 focus:ring-primary-500">
+                <SelectTrigger className="h-12 rounded-xl border-2 border-white/10 bg-slate-800/50 focus:ring-2 focus:ring-primary-500">
                   <div className="flex items-center gap-2">
-                    <Tag className="w-4 h-4 text-gray-500" />
+                    <Tag className="w-4 h-4 text-slate-400" />
                     <SelectValue placeholder="Kategori" />
                   </div>
                 </SelectTrigger>
@@ -303,8 +303,8 @@ export default function DemirbaslarPage() {
           <div className="p-4 rounded-full bg-purple-50 mb-4">
             <Package className="h-12 w-12 text-purple-400" />
           </div>
-          <h3 className="text-xl font-semibold text-gray-900">Demirbaş bulunamadı</h3>
-          <p className="text-gray-500 mt-2 max-w-sm mx-auto">
+          <h3 className="text-xl font-semibold text-white">Demirbaş bulunamadı</h3>
+          <p className="text-slate-400 mt-2 max-w-sm mx-auto">
             Henüz kayıtlı demirbaş yok veya filtrelerinize uygun sonuç bulunamadı.
           </p>
           <div className="mt-6">
@@ -322,7 +322,7 @@ export default function DemirbaslarPage() {
                 <div className="absolute top-4 right-4 z-10">
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                      <button className="p-2 rounded-full bg-white/20 hover:bg-white/30 text-white backdrop-blur-sm transition-colors">
+                      <button className="p-2 rounded-full bg-slate-800/50/20 hover:bg-slate-800/50/30 text-white backdrop-blur-sm transition-colors">
                         <MoreHorizontal className="h-5 w-5" />
                       </button>
                     </DropdownMenuTrigger>
@@ -342,7 +342,7 @@ export default function DemirbaslarPage() {
                   </DropdownMenu>
                 </div>
                 <div className="absolute -bottom-6 left-6">
-                  <div className="p-3 rounded-xl bg-white shadow-md border border-gray-100">
+                  <div className="p-3 rounded-xl bg-slate-800/50 shadow-md border border-white/10">
                     <Package className="h-8 w-8 text-purple-600" />
                   </div>
                 </div>
@@ -351,47 +351,47 @@ export default function DemirbaslarPage() {
               <div className="pt-10 px-6 pb-6">
                 <div>
                   <div className="flex justify-between items-start">
-                    <h3 className="text-xl font-bold text-gray-900 group-hover:text-purple-600 transition-colors">
+                    <h3 className="text-xl font-bold text-white group-hover:text-purple-600 transition-colors">
                       {item.name}
                     </h3>
                     <ModernBadge variant={statusVariants[item.status]} size="sm">
                       {statusLabels[item.status]}
                     </ModernBadge>
                   </div>
-                  <div className="flex items-center gap-1.5 mt-2 text-sm text-gray-500">
-                    <Building2 className="h-4 w-4 text-gray-400" />
+                  <div className="flex items-center gap-1.5 mt-2 text-sm text-slate-400">
+                    <Building2 className="h-4 w-4 text-slate-500" />
                     {item.site.name}
                   </div>
                   {item.commonArea && (
-                    <div className="flex items-center gap-1.5 mt-1 text-sm text-gray-500">
-                      <MapPin className="h-4 w-4 text-gray-400" />
+                    <div className="flex items-center gap-1.5 mt-1 text-sm text-slate-400">
+                      <MapPin className="h-4 w-4 text-slate-500" />
                       {item.commonArea.name}
                     </div>
                   )}
                 </div>
 
                 <div className="grid grid-cols-2 gap-3 mt-6">
-                  <div className="p-3 rounded-xl bg-gray-50 border border-gray-100">
-                    <div className="flex items-center gap-2 text-gray-500 mb-1">
+                  <div className="p-3 rounded-xl bg-slate-800/30 border border-white/10">
+                    <div className="flex items-center gap-2 text-slate-400 mb-1">
                       <Tag className="h-4 w-4" />
                       <span className="text-xs font-medium">Kategori</span>
                     </div>
-                    <span className="text-sm font-bold text-gray-900 truncate">
+                    <span className="text-sm font-bold text-white truncate">
                       {categories.find(c => c.value === item.category)?.label || item.category}
                     </span>
                   </div>
-                  <div className="p-3 rounded-xl bg-gray-50 border border-gray-100">
-                    <div className="flex items-center gap-2 text-gray-500 mb-1">
+                  <div className="p-3 rounded-xl bg-slate-800/30 border border-white/10">
+                    <div className="flex items-center gap-2 text-slate-400 mb-1">
                       <QrCode className="h-4 w-4" />
                       <span className="text-xs font-medium">Adet</span>
                     </div>
-                    <span className="text-lg font-bold text-gray-900">{item.quantity}</span>
+                    <span className="text-lg font-bold text-white">{item.quantity}</span>
                   </div>
                 </div>
 
                 {item.serialNumber && (
-                  <div className="mt-4 pt-4 border-t border-gray-100">
-                    <p className="text-xs text-gray-500 font-mono flex items-center gap-2">
+                  <div className="mt-4 pt-4 border-t border-white/10">
+                    <p className="text-xs text-slate-400 font-mono flex items-center gap-2">
                       <QrCode className="h-3 w-3" />
                       SN: {item.serialNumber}
                     </p>
@@ -404,9 +404,9 @@ export default function DemirbaslarPage() {
       )}
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="max-w-md p-0 overflow-hidden bg-white/95 backdrop-blur-xl border border-white/20 shadow-2xl">
-          <DialogHeader className="p-6 bg-gradient-to-r from-gray-50 to-white border-b border-gray-100">
-            <DialogTitle className="text-xl font-bold text-gray-900">
+        <DialogContent className="max-w-md p-0 overflow-hidden bg-slate-800/50/95 backdrop-blur-xl border border-white/20 shadow-2xl">
+          <DialogHeader className="p-6 bg-gradient-to-r from-gray-50 to-white border-b border-white/10">
+            <DialogTitle className="text-xl font-bold text-white">
               {editingItem ? "Demirbaşı Düzenle" : "Yeni Demirbaş Ekle"}
             </DialogTitle>
           </DialogHeader>
@@ -421,7 +421,7 @@ export default function DemirbaslarPage() {
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <label className="text-sm font-semibold text-gray-700">Site *</label>
+                <label className="text-sm font-semibold text-slate-200">Site *</label>
                 <Select
                   value={formData.siteId}
                   onValueChange={(value) => {
@@ -429,7 +429,7 @@ export default function DemirbaslarPage() {
                     fetchCommonAreas(value)
                   }}
                 >
-                  <SelectTrigger className="h-12 rounded-xl border-2 border-gray-200 bg-white">
+                  <SelectTrigger className="h-12 rounded-xl border-2 border-white/10 bg-slate-800/50">
                     <SelectValue placeholder="Site seçin" />
                   </SelectTrigger>
                   <SelectContent>
@@ -440,13 +440,13 @@ export default function DemirbaslarPage() {
                 </Select>
               </div>
               <div className="space-y-2">
-                <label className="text-sm font-semibold text-gray-700">Ortak Alan</label>
+                <label className="text-sm font-semibold text-slate-200">Ortak Alan</label>
                 <Select
                   value={formData.commonAreaId}
                   onValueChange={(value) => setFormData({ ...formData, commonAreaId: value })}
                   disabled={!formData.siteId}
                 >
-                  <SelectTrigger className="h-12 rounded-xl border-2 border-gray-200 bg-white">
+                  <SelectTrigger className="h-12 rounded-xl border-2 border-white/10 bg-slate-800/50">
                     <SelectValue placeholder="Alan seçin" />
                   </SelectTrigger>
                   <SelectContent>
@@ -461,12 +461,12 @@ export default function DemirbaslarPage() {
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <label className="text-sm font-semibold text-gray-700">Kategori</label>
+                <label className="text-sm font-semibold text-slate-200">Kategori</label>
                 <Select
                   value={formData.category}
                   onValueChange={(value) => setFormData({ ...formData, category: value })}
                 >
-                  <SelectTrigger className="h-12 rounded-xl border-2 border-gray-200 bg-white">
+                  <SelectTrigger className="h-12 rounded-xl border-2 border-white/10 bg-slate-800/50">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -477,12 +477,12 @@ export default function DemirbaslarPage() {
                 </Select>
               </div>
               <div className="space-y-2">
-                <label className="text-sm font-semibold text-gray-700">Durum</label>
+                <label className="text-sm font-semibold text-slate-200">Durum</label>
                 <Select
                   value={formData.status}
                   onValueChange={(value) => setFormData({ ...formData, status: value })}
                 >
-                  <SelectTrigger className="h-12 rounded-xl border-2 border-gray-200 bg-white">
+                  <SelectTrigger className="h-12 rounded-xl border-2 border-white/10 bg-slate-800/50">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>

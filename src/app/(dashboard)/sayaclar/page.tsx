@@ -119,8 +119,8 @@ export default function SayaclarPage() {
     <div className="space-y-8 animate-fade-in">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">Sayaç Yönetimi</h1>
-          <p className="text-gray-500 mt-1 text-lg">Elektrik, su ve doğalgaz sayaçlarını takip edin</p>
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">Sayaç Yönetimi</h1>
+          <p className="text-slate-400 mt-1 text-lg">Elektrik, su ve doğalgaz sayaçlarını takip edin</p>
         </div>
         <ModernButton onClick={() => setIsDialogOpen(true)} icon={<Plus className="w-5 h-5" />}>
           Yeni Okuma Kaydı
@@ -132,9 +132,9 @@ export default function SayaclarPage() {
         <ModernCard padding="md" className="bg-gradient-to-br from-yellow-50 to-orange-50 border-yellow-200">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600">Toplam Elektrik</p>
-              <p className="text-3xl font-bold text-gray-900 mt-1">1,250 kWh</p>
-              <p className="text-xs text-gray-500 mt-1">Bu ay</p>
+              <p className="text-sm font-medium text-slate-300">Toplam Elektrik</p>
+              <p className="text-3xl font-bold text-white mt-1">1,250 kWh</p>
+              <p className="text-xs text-slate-400 mt-1">Bu ay</p>
             </div>
             <div className="p-4 rounded-xl bg-yellow-100">
               <Zap className="h-8 w-8 text-yellow-600" />
@@ -145,9 +145,9 @@ export default function SayaclarPage() {
         <ModernCard padding="md" className="bg-gradient-to-br from-blue-50 to-cyan-50 border-blue-200">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600">Toplam Su</p>
-              <p className="text-3xl font-bold text-gray-900 mt-1">850 m³</p>
-              <p className="text-xs text-gray-500 mt-1">Bu ay</p>
+              <p className="text-sm font-medium text-slate-300">Toplam Su</p>
+              <p className="text-3xl font-bold text-white mt-1">850 m³</p>
+              <p className="text-xs text-slate-400 mt-1">Bu ay</p>
             </div>
             <div className="p-4 rounded-xl bg-blue-100">
               <Droplet className="h-8 w-8 text-blue-600" />
@@ -158,9 +158,9 @@ export default function SayaclarPage() {
         <ModernCard padding="md" className="bg-gradient-to-br from-red-50 to-orange-50 border-red-200">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600">Toplam Doğalgaz</p>
-              <p className="text-3xl font-bold text-gray-900 mt-1">620 m³</p>
-              <p className="text-xs text-gray-500 mt-1">Bu ay</p>
+              <p className="text-sm font-medium text-slate-300">Toplam Doğalgaz</p>
+              <p className="text-3xl font-bold text-white mt-1">620 m³</p>
+              <p className="text-xs text-slate-400 mt-1">Bu ay</p>
             </div>
             <div className="p-4 rounded-xl bg-red-100">
               <Flame className="h-8 w-8 text-red-600" />
@@ -170,7 +170,7 @@ export default function SayaclarPage() {
       </div>
 
       {/* Filters */}
-      <ModernCard padding="md" className="bg-white/80 backdrop-blur-sm">
+      <ModernCard padding="md" className="bg-slate-800/50/80 backdrop-blur-sm">
         <div className="flex flex-col md:flex-row gap-4">
           <div className="flex-1">
             <ModernInput
@@ -178,14 +178,14 @@ export default function SayaclarPage() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               icon={<Search className="w-5 h-5" />}
-              className="bg-white"
+              className="bg-slate-800/50"
             />
           </div>
           <div className="w-full md:w-64">
             <Select value={filterType} onValueChange={setFilterType}>
-              <SelectTrigger className="h-12 rounded-xl border-2 border-gray-200 bg-white focus:ring-2 focus:ring-primary-500">
+              <SelectTrigger className="h-12 rounded-xl border-2 border-white/10 bg-slate-800/50 focus:ring-2 focus:ring-primary-500">
                 <div className="flex items-center gap-2">
-                  <Filter className="w-4 h-4 text-gray-500" />
+                  <Filter className="w-4 h-4 text-slate-400" />
                   <SelectValue placeholder="Tür Filtrele" />
                 </div>
               </SelectTrigger>
@@ -212,7 +212,7 @@ export default function SayaclarPage() {
                 <div className="absolute top-4 right-4 z-10">
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                      <button className="p-2 rounded-full bg-white/20 hover:bg-white/30 text-white backdrop-blur-sm transition-colors">
+                      <button className="p-2 rounded-full bg-slate-800/50/20 hover:bg-slate-800/50/30 text-white backdrop-blur-sm transition-colors">
                         <MoreHorizontal className="h-5 w-5" />
                       </button>
                     </DropdownMenuTrigger>
@@ -229,7 +229,7 @@ export default function SayaclarPage() {
                   </DropdownMenu>
                 </div>
                 <div className="absolute -bottom-6 left-6">
-                  <div className="p-3 rounded-xl bg-white shadow-md border border-gray-100">
+                  <div className="p-3 rounded-xl bg-slate-800/50 shadow-md border border-white/10">
                     <Icon className="h-8 w-8" style={{
                       color: meter.type === 'ELECTRIC' ? '#f59e0b' : 
                              meter.type === 'WATER' ? '#3b82f6' : '#ef4444'
@@ -241,7 +241,7 @@ export default function SayaclarPage() {
               <div className="pt-10 px-6 pb-6">
                 <div className="flex justify-between items-start mb-4">
                   <div>
-                    <h3 className="text-lg font-bold text-gray-900 group-hover:text-primary-600 transition-colors">
+                    <h3 className="text-lg font-bold text-white group-hover:text-primary-600 transition-colors">
                       {meter.meterNumber}
                     </h3>
                     <ModernBadge variant="secondary" size="sm" className="mt-1">
@@ -251,33 +251,33 @@ export default function SayaclarPage() {
                 </div>
 
                 <div className="space-y-3">
-                  <div className="flex items-center gap-2 text-sm text-gray-500">
+                  <div className="flex items-center gap-2 text-sm text-slate-400">
                     <Building2 className="h-4 w-4" />
                     {meter.site}
                   </div>
-                  <div className="flex items-center gap-2 text-sm text-gray-500">
+                  <div className="flex items-center gap-2 text-sm text-slate-400">
                     <Gauge className="h-4 w-4" />
                     {meter.location}
                   </div>
-                  <div className="flex items-center gap-2 text-sm text-gray-500">
+                  <div className="flex items-center gap-2 text-sm text-slate-400">
                     <Calendar className="h-4 w-4" />
                     {new Date(meter.readingDate).toLocaleDateString('tr-TR')}
                   </div>
                 </div>
 
-                <div className="mt-6 pt-4 border-t border-gray-100">
+                <div className="mt-6 pt-4 border-t border-white/10">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-xs text-gray-500">Son Okuma</p>
-                      <p className="text-lg font-bold text-gray-900">{meter.lastReading}</p>
+                      <p className="text-xs text-slate-400">Son Okuma</p>
+                      <p className="text-lg font-bold text-white">{meter.lastReading}</p>
                     </div>
                     <div className={`flex items-center gap-1 ${meter.trend === 'up' ? 'text-red-600' : 'text-green-600'}`}>
                       {meter.trend === 'up' ? <TrendingUp className="h-4 w-4" /> : <TrendingDown className="h-4 w-4" />}
                       <span className="text-sm font-semibold">{meter.consumption}</span>
                     </div>
                     <div>
-                      <p className="text-xs text-gray-500">Güncel</p>
-                      <p className="text-lg font-bold text-gray-900">{meter.currentReading}</p>
+                      <p className="text-xs text-slate-400">Güncel</p>
+                      <p className="text-lg font-bold text-white">{meter.currentReading}</p>
                     </div>
                   </div>
                 </div>
@@ -288,15 +288,15 @@ export default function SayaclarPage() {
       </div>
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="max-w-lg p-0 overflow-hidden bg-white/95 backdrop-blur-xl border border-white/20 shadow-2xl">
-          <DialogHeader className="p-6 bg-gradient-to-r from-gray-50 to-white border-b border-gray-100">
-            <DialogTitle className="text-xl font-bold text-gray-900">Yeni Sayaç Okuması</DialogTitle>
+        <DialogContent className="max-w-lg p-0 overflow-hidden bg-slate-800/50/95 backdrop-blur-xl border border-white/20 shadow-2xl">
+          <DialogHeader className="p-6 bg-gradient-to-r from-gray-50 to-white border-b border-white/10">
+            <DialogTitle className="text-xl font-bold text-white">Yeni Sayaç Okuması</DialogTitle>
           </DialogHeader>
           <div className="p-6 space-y-4">
             <div className="space-y-2">
-              <label className="text-sm font-semibold text-gray-700">Sayaç Türü</label>
+              <label className="text-sm font-semibold text-slate-200">Sayaç Türü</label>
               <Select defaultValue="ELECTRIC">
-                <SelectTrigger className="h-12 rounded-xl border-2 border-gray-200 bg-white">
+                <SelectTrigger className="h-12 rounded-xl border-2 border-white/10 bg-slate-800/50">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>

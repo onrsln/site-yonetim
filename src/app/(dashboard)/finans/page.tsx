@@ -138,8 +138,8 @@ export default function FinansPage() {
     <div className="space-y-8 animate-fade-in">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">Finans Yönetimi</h1>
-          <p className="text-gray-500 mt-1 text-lg">Gelir, gider ve mali durumu takip edin</p>
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">Finans Yönetimi</h1>
+          <p className="text-slate-400 mt-1 text-lg">Gelir, gider ve mali durumu takip edin</p>
         </div>
         <ModernButton onClick={() => setIsDialogOpen(true)} icon={<Plus className="w-5 h-5" />}>
           Yeni İşlem
@@ -151,9 +151,9 @@ export default function FinansPage() {
         <ModernCard padding="md" className="bg-gradient-to-br from-green-50 to-emerald-50 border-green-200">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600">Toplam Gelir</p>
+              <p className="text-sm font-medium text-slate-300">Toplam Gelir</p>
               <p className="text-3xl font-bold text-green-600 mt-1">₺{totalIncome.toLocaleString('tr-TR')}</p>
-              <p className="text-xs text-gray-500 mt-1">Bu ay</p>
+              <p className="text-xs text-slate-400 mt-1">Bu ay</p>
             </div>
             <div className="p-4 rounded-xl bg-green-100">
               <ArrowUpRight className="h-8 w-8 text-green-600" />
@@ -164,9 +164,9 @@ export default function FinansPage() {
         <ModernCard padding="md" className="bg-gradient-to-br from-red-50 to-pink-50 border-red-200">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600">Toplam Gider</p>
+              <p className="text-sm font-medium text-slate-300">Toplam Gider</p>
               <p className="text-3xl font-bold text-red-600 mt-1">₺{totalExpense.toLocaleString('tr-TR')}</p>
-              <p className="text-xs text-gray-500 mt-1">Bu ay</p>
+              <p className="text-xs text-slate-400 mt-1">Bu ay</p>
             </div>
             <div className="p-4 rounded-xl bg-red-100">
               <ArrowDownRight className="h-8 w-8 text-red-600" />
@@ -177,11 +177,11 @@ export default function FinansPage() {
         <ModernCard padding="md" className={`bg-gradient-to-br ${balance >= 0 ? 'from-blue-50 to-indigo-50 border-blue-200' : 'from-orange-50 to-red-50 border-orange-200'}`}>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600">Net Bakiye</p>
+              <p className="text-sm font-medium text-slate-300">Net Bakiye</p>
               <p className={`text-3xl font-bold mt-1 ${balance >= 0 ? 'text-blue-600' : 'text-orange-600'}`}>
                 ₺{balance.toLocaleString('tr-TR')}
               </p>
-              <p className="text-xs text-gray-500 mt-1">Güncel durum</p>
+              <p className="text-xs text-slate-400 mt-1">Güncel durum</p>
             </div>
             <div className={`p-4 rounded-xl ${balance >= 0 ? 'bg-blue-100' : 'bg-orange-100'}`}>
               <Wallet className={`h-8 w-8 ${balance >= 0 ? 'text-blue-600' : 'text-orange-600'}`} />
@@ -191,7 +191,7 @@ export default function FinansPage() {
       </div>
 
       {/* Filters */}
-      <ModernCard padding="md" className="bg-white/80 backdrop-blur-sm">
+      <ModernCard padding="md" className="bg-slate-800/50/80 backdrop-blur-sm">
         <div className="flex flex-col md:flex-row gap-4">
           <div className="flex-1">
             <ModernInput
@@ -199,14 +199,14 @@ export default function FinansPage() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               icon={<Search className="w-5 h-5" />}
-              className="bg-white"
+              className="bg-slate-800/50"
             />
           </div>
           <div className="w-full md:w-64">
             <Select value={filterType} onValueChange={setFilterType}>
-              <SelectTrigger className="h-12 rounded-xl border-2 border-gray-200 bg-white focus:ring-2 focus:ring-primary-500">
+              <SelectTrigger className="h-12 rounded-xl border-2 border-white/10 bg-slate-800/50 focus:ring-2 focus:ring-primary-500">
                 <div className="flex items-center gap-2">
-                  <Filter className="w-4 h-4 text-gray-500" />
+                  <Filter className="w-4 h-4 text-slate-400" />
                   <SelectValue placeholder="Tür Filtrele" />
                 </div>
               </SelectTrigger>
@@ -241,16 +241,16 @@ export default function FinansPage() {
                       <ModernBadge variant={typeConfig.variant} size="sm">
                         {typeConfig.label}
                       </ModernBadge>
-                      <span className="text-xs font-medium px-2 py-1 rounded-md bg-gray-100 text-gray-600 border border-gray-200">
+                      <span className="text-xs font-medium px-2 py-1 rounded-md bg-slate-800/50 text-slate-300 border border-white/10">
                         {categoryLabels[transaction.category]}
                       </span>
                     </div>
                     
-                    <h3 className="text-lg font-bold text-gray-900 group-hover:text-primary-600 transition-colors">
+                    <h3 className="text-lg font-bold text-white group-hover:text-primary-600 transition-colors">
                       {transaction.description}
                     </h3>
                     
-                    <div className="flex flex-wrap items-center gap-4 mt-2 text-sm text-gray-500">
+                    <div className="flex flex-wrap items-center gap-4 mt-2 text-sm text-slate-400">
                       <div className="flex items-center gap-1.5">
                         <Building2 className="h-4 w-4" />
                         {transaction.site}
@@ -267,7 +267,7 @@ export default function FinansPage() {
                   </div>
                 </div>
 
-                <div className="flex items-center gap-4 md:self-center pt-4 md:pt-0 border-t md:border-t-0 border-gray-100">
+                <div className="flex items-center gap-4 md:self-center pt-4 md:pt-0 border-t md:border-t-0 border-white/10">
                   <div className="text-right">
                     <p className={`text-2xl font-bold ${transaction.type === 'INCOME' ? 'text-green-600' : 'text-red-600'}`}>
                       {transaction.type === 'INCOME' ? '+' : '-'}₺{transaction.amount.toLocaleString('tr-TR')}
@@ -276,7 +276,7 @@ export default function FinansPage() {
                   
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                      <button className="p-2 rounded-xl hover:bg-gray-100 text-gray-400 hover:text-gray-600 transition-colors">
+                      <button className="p-2 rounded-xl hover:bg-slate-800/50 text-slate-500 hover:text-slate-300 transition-colors">
                         <MoreHorizontal className="h-5 w-5" />
                       </button>
                     </DropdownMenuTrigger>
@@ -299,16 +299,16 @@ export default function FinansPage() {
       </div>
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="max-w-lg p-0 overflow-hidden bg-white/95 backdrop-blur-xl border border-white/20 shadow-2xl">
-          <DialogHeader className="p-6 bg-gradient-to-r from-gray-50 to-white border-b border-gray-100">
-            <DialogTitle className="text-xl font-bold text-gray-900">Yeni Mali İşlem</DialogTitle>
+        <DialogContent className="max-w-lg p-0 overflow-hidden bg-slate-800/50/95 backdrop-blur-xl border border-white/20 shadow-2xl">
+          <DialogHeader className="p-6 bg-gradient-to-r from-gray-50 to-white border-b border-white/10">
+            <DialogTitle className="text-xl font-bold text-white">Yeni Mali İşlem</DialogTitle>
           </DialogHeader>
           <div className="p-6 space-y-4">
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <label className="text-sm font-semibold text-gray-700">İşlem Türü</label>
+                <label className="text-sm font-semibold text-slate-200">İşlem Türü</label>
                 <Select defaultValue="INCOME">
-                  <SelectTrigger className="h-12 rounded-xl border-2 border-gray-200 bg-white">
+                  <SelectTrigger className="h-12 rounded-xl border-2 border-white/10 bg-slate-800/50">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -318,9 +318,9 @@ export default function FinansPage() {
                 </Select>
               </div>
               <div className="space-y-2">
-                <label className="text-sm font-semibold text-gray-700">Kategori</label>
+                <label className="text-sm font-semibold text-slate-200">Kategori</label>
                 <Select defaultValue="DUES">
-                  <SelectTrigger className="h-12 rounded-xl border-2 border-gray-200 bg-white">
+                  <SelectTrigger className="h-12 rounded-xl border-2 border-white/10 bg-slate-800/50">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -346,9 +346,9 @@ export default function FinansPage() {
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-semibold text-gray-700">Ödeme Yöntemi</label>
+              <label className="text-sm font-semibold text-slate-200">Ödeme Yöntemi</label>
               <Select defaultValue="BANK_TRANSFER">
-                <SelectTrigger className="h-12 rounded-xl border-2 border-gray-200 bg-white">
+                <SelectTrigger className="h-12 rounded-xl border-2 border-white/10 bg-slate-800/50">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>

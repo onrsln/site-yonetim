@@ -209,8 +209,8 @@ export default function EksikliklerPage() {
     <div className="space-y-8 animate-fade-in">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">Eksiklikler</h1>
-          <p className="text-gray-500 mt-1 text-lg">Tüm eksiklikleri ve arızaları yönetin</p>
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">Eksiklikler</h1>
+          <p className="text-slate-400 mt-1 text-lg">Tüm eksiklikleri ve arızaları yönetin</p>
         </div>
         <ModernButton onClick={() => { resetForm(); setIsDialogOpen(true); }} icon={<Plus className="w-5 h-5" />}>
           Yeni Eksiklik
@@ -218,7 +218,7 @@ export default function EksikliklerPage() {
       </div>
 
       {/* Filters */}
-      <ModernCard padding="md" className="bg-white/80 backdrop-blur-sm">
+      <ModernCard padding="md" className="bg-slate-800/50/80 backdrop-blur-sm">
         <div className="flex flex-col md:flex-row gap-4">
           <div className="flex-1">
             <ModernInput
@@ -226,14 +226,14 @@ export default function EksikliklerPage() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               icon={<Search className="w-5 h-5" />}
-              className="bg-white"
+              className="bg-slate-800/50"
             />
           </div>
           <div className="flex gap-4">
             <Select value={filterStatus} onValueChange={setFilterStatus}>
-              <SelectTrigger className="w-full md:w-48 h-12 rounded-xl border-2 border-gray-200 bg-white focus:ring-2 focus:ring-primary-500">
+              <SelectTrigger className="w-full md:w-48 h-12 rounded-xl border-2 border-white/10 bg-slate-800/50 focus:ring-2 focus:ring-primary-500">
                 <div className="flex items-center gap-2">
-                  <Filter className="w-4 h-4 text-gray-500" />
+                  <Filter className="w-4 h-4 text-slate-400" />
                   <SelectValue placeholder="Durum" />
                 </div>
               </SelectTrigger>
@@ -245,9 +245,9 @@ export default function EksikliklerPage() {
               </SelectContent>
             </Select>
             <Select value={filterPriority} onValueChange={setFilterPriority}>
-              <SelectTrigger className="w-full md:w-48 h-12 rounded-xl border-2 border-gray-200 bg-white focus:ring-2 focus:ring-primary-500">
+              <SelectTrigger className="w-full md:w-48 h-12 rounded-xl border-2 border-white/10 bg-slate-800/50 focus:ring-2 focus:ring-primary-500">
                 <div className="flex items-center gap-2">
-                  <AlertTriangle className="w-4 h-4 text-gray-500" />
+                  <AlertTriangle className="w-4 h-4 text-slate-400" />
                   <SelectValue placeholder="Öncelik" />
                 </div>
               </SelectTrigger>
@@ -268,8 +268,8 @@ export default function EksikliklerPage() {
           <div className="p-4 rounded-full bg-red-50 mb-4">
             <AlertTriangle className="h-12 w-12 text-red-400" />
           </div>
-          <h3 className="text-xl font-semibold text-gray-900">Eksiklik bulunamadı</h3>
-          <p className="text-gray-500 mt-2 max-w-sm mx-auto">
+          <h3 className="text-xl font-semibold text-white">Eksiklik bulunamadı</h3>
+          <p className="text-slate-400 mt-2 max-w-sm mx-auto">
             Henüz kayıtlı eksiklik yok veya filtrelerinize uygun sonuç bulunamadı.
           </p>
           <div className="mt-6">
@@ -296,21 +296,21 @@ export default function EksikliklerPage() {
                     <ModernBadge variant={statusVariants[issue.status]} size="sm">
                       {issueStatusLabels[issue.status]}
                     </ModernBadge>
-                    <span className="text-xs font-medium px-2 py-1 rounded-md bg-gray-100 text-gray-600 border border-gray-200">
+                    <span className="text-xs font-medium px-2 py-1 rounded-md bg-slate-800/50 text-slate-300 border border-white/10">
                       {issueTypeLabels[issue.type]}
                     </span>
                   </div>
                   
-                  <h3 className="text-lg font-bold text-gray-900 truncate group-hover:text-primary-600 transition-colors">
+                  <h3 className="text-lg font-bold text-white truncate group-hover:text-primary-600 transition-colors">
                     {issue.title}
                   </h3>
                   
-                  <div className="flex items-center gap-2 mt-1 text-gray-500 text-sm">
+                  <div className="flex items-center gap-2 mt-1 text-slate-400 text-sm">
                     <MapPin className="h-4 w-4" />
                     <span>{getLocationText(issue)}</span>
                   </div>
 
-                  <div className="flex flex-wrap items-center gap-4 mt-3 text-xs text-gray-400">
+                  <div className="flex flex-wrap items-center gap-4 mt-3 text-xs text-slate-500">
                     <div className="flex items-center gap-1.5">
                       <User className="h-3.5 w-3.5" />
                       {issue.createdBy.name}
@@ -334,10 +334,10 @@ export default function EksikliklerPage() {
                   </div>
                 </div>
 
-                <div className="flex items-center gap-2 md:self-center pt-4 md:pt-0 border-t md:border-t-0 border-gray-100">
+                <div className="flex items-center gap-2 md:self-center pt-4 md:pt-0 border-t md:border-t-0 border-white/10">
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                      <button className="p-2 rounded-xl hover:bg-gray-100 text-gray-400 hover:text-gray-600 transition-colors">
+                      <button className="p-2 rounded-xl hover:bg-slate-800/50 text-slate-500 hover:text-slate-300 transition-colors">
                         <MoreHorizontal className="h-5 w-5" />
                       </button>
                     </DropdownMenuTrigger>
@@ -379,9 +379,9 @@ export default function EksikliklerPage() {
 
       {/* New Issue Dialog */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="max-w-lg p-0 overflow-hidden bg-white/95 backdrop-blur-xl border border-white/20 shadow-2xl">
-          <DialogHeader className="p-6 bg-gradient-to-r from-gray-50 to-white border-b border-gray-100">
-            <DialogTitle className="text-xl font-bold text-gray-900">Yeni Eksiklik Ekle</DialogTitle>
+        <DialogContent className="max-w-lg p-0 overflow-hidden bg-slate-800/50/95 backdrop-blur-xl border border-white/20 shadow-2xl">
+          <DialogHeader className="p-6 bg-gradient-to-r from-gray-50 to-white border-b border-white/10">
+            <DialogTitle className="text-xl font-bold text-white">Yeni Eksiklik Ekle</DialogTitle>
           </DialogHeader>
           <form onSubmit={handleSubmit} className="p-6 space-y-4">
             <ModernInput
@@ -395,12 +395,12 @@ export default function EksikliklerPage() {
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <label className="text-sm font-semibold text-gray-700">Tür</label>
+                <label className="text-sm font-semibold text-slate-200">Tür</label>
                 <Select
                   value={formData.type}
                   onValueChange={(value) => setFormData({ ...formData, type: value })}
                 >
-                  <SelectTrigger className="h-12 rounded-xl border-2 border-gray-200 bg-white">
+                  <SelectTrigger className="h-12 rounded-xl border-2 border-white/10 bg-slate-800/50">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -411,12 +411,12 @@ export default function EksikliklerPage() {
                 </Select>
               </div>
               <div className="space-y-2">
-                <label className="text-sm font-semibold text-gray-700">Öncelik</label>
+                <label className="text-sm font-semibold text-slate-200">Öncelik</label>
                 <Select
                   value={formData.priority}
                   onValueChange={(value) => setFormData({ ...formData, priority: value })}
                 >
-                  <SelectTrigger className="h-12 rounded-xl border-2 border-gray-200 bg-white">
+                  <SelectTrigger className="h-12 rounded-xl border-2 border-white/10 bg-slate-800/50">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -430,7 +430,7 @@ export default function EksikliklerPage() {
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <label className="text-sm font-semibold text-gray-700">Site</label>
+                <label className="text-sm font-semibold text-slate-200">Site</label>
                 <Select
                   value={formData.siteId}
                   onValueChange={(value) => {
@@ -438,7 +438,7 @@ export default function EksikliklerPage() {
                     fetchBlocks(value)
                   }}
                 >
-                  <SelectTrigger className="h-12 rounded-xl border-2 border-gray-200 bg-white">
+                  <SelectTrigger className="h-12 rounded-xl border-2 border-white/10 bg-slate-800/50">
                     <SelectValue placeholder="Site seçin" />
                   </SelectTrigger>
                   <SelectContent>
@@ -449,13 +449,13 @@ export default function EksikliklerPage() {
                 </Select>
               </div>
               <div className="space-y-2">
-                <label className="text-sm font-semibold text-gray-700">Blok</label>
+                <label className="text-sm font-semibold text-slate-200">Blok</label>
                 <Select
                   value={formData.blockId}
                   onValueChange={(value) => setFormData({ ...formData, blockId: value })}
                   disabled={!formData.siteId}
                 >
-                  <SelectTrigger className="h-12 rounded-xl border-2 border-gray-200 bg-white">
+                  <SelectTrigger className="h-12 rounded-xl border-2 border-white/10 bg-slate-800/50">
                     <SelectValue placeholder="Blok seçin" />
                   </SelectTrigger>
                   <SelectContent>

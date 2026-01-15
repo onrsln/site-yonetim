@@ -135,8 +135,8 @@ export default function SitelerPage() {
     <div className="space-y-8 animate-fade-in">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">Siteler</h1>
-          <p className="text-gray-500 mt-1 text-lg">Tüm siteleri görüntüleyin ve yönetin</p>
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">Siteler</h1>
+          <p className="text-slate-400 mt-1 text-lg">Tüm siteleri görüntüleyin ve yönetin</p>
         </div>
         <ModernButton onClick={() => { resetForm(); setIsDialogOpen(true); }} icon={<Plus className="w-5 h-5" />}>
           Yeni Site
@@ -155,13 +155,13 @@ export default function SitelerPage() {
 
       {filteredSites.length === 0 ? (
         <ModernCard className="flex flex-col items-center justify-center py-16 text-center" variant="bordered">
-          <div className="p-4 rounded-full bg-gray-50 mb-4">
-            <Building2 className="h-12 w-12 text-gray-400" />
+          <div className="p-4 rounded-full bg-slate-800/30 mb-4">
+            <Building2 className="h-12 w-12 text-slate-500" />
           </div>
-          <h3 className="text-xl font-semibold text-gray-900">
+          <h3 className="text-xl font-semibold text-white">
             {searchQuery ? "Sonuç bulunamadı" : "Henüz site yok"}
           </h3>
-          <p className="text-gray-500 mt-2 max-w-sm mx-auto">
+          <p className="text-slate-400 mt-2 max-w-sm mx-auto">
             {searchQuery 
               ? `"${searchQuery}" araması için sonuç bulunamadı.` 
               : "Sistemde kayıtlı site bulunmuyor. Yeni bir site ekleyerek başlayın."}
@@ -183,7 +183,7 @@ export default function SitelerPage() {
                 <div className="absolute top-4 right-4 z-10">
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                      <button className="p-2 rounded-full bg-white/20 hover:bg-white/30 text-white backdrop-blur-sm transition-colors">
+                      <button className="p-2 rounded-full bg-slate-800/50/20 hover:bg-slate-800/50/30 text-white backdrop-blur-sm transition-colors">
                         <MoreHorizontal className="h-5 w-5" />
                       </button>
                     </DropdownMenuTrigger>
@@ -209,24 +209,24 @@ export default function SitelerPage() {
                   </DropdownMenu>
                 </div>
                 <div className="absolute -bottom-6 left-6">
-                  <div className="p-3 rounded-xl bg-white shadow-md border border-gray-100">
+                  <div className="p-3 rounded-xl bg-slate-800/50 shadow-md border border-white/10">
                     <Building2 className="h-8 w-8 text-blue-600" />
                   </div>
                 </div>
               </div>
               <div className="pt-10 px-6 pb-6">
                 <div>
-                  <h3 className="text-xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors">{site.name}</h3>
+                  <h3 className="text-xl font-bold text-white group-hover:text-blue-600 transition-colors">{site.name}</h3>
                   {site.city && (
-                    <p className="text-sm text-gray-500 flex items-center gap-1.5 mt-2">
-                      <MapPin className="h-4 w-4 text-gray-400" />
+                    <p className="text-sm text-slate-400 flex items-center gap-1.5 mt-2">
+                      <MapPin className="h-4 w-4 text-slate-500" />
                       {site.district && `${site.district}, `}{site.city}
                     </p>
                   )}
                 </div>
                 
                 {site.description && (
-                  <p className="text-sm text-gray-600 mt-4 line-clamp-2">
+                  <p className="text-sm text-slate-300 mt-4 line-clamp-2">
                     {site.description}
                   </p>
                 )}
@@ -243,7 +243,7 @@ export default function SitelerPage() {
                   )}
                 </div>
 
-                <div className="mt-6 pt-4 border-t border-gray-100 flex justify-end">
+                <div className="mt-6 pt-4 border-t border-white/10 flex justify-end">
                   <Link href={`/siteler/${site.id}`} className="text-sm font-medium text-blue-600 hover:text-blue-700 flex items-center gap-1">
                     Detayları Gör
                     <Eye className="h-4 w-4" />
@@ -256,9 +256,9 @@ export default function SitelerPage() {
       )}
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="max-w-md p-0 overflow-hidden bg-white/95 backdrop-blur-xl border border-white/20 shadow-2xl">
-          <DialogHeader className="p-6 bg-gradient-to-r from-gray-50 to-white border-b border-gray-100">
-            <DialogTitle className="text-xl font-bold text-gray-900">
+        <DialogContent className="max-w-md p-0 overflow-hidden bg-slate-800/50/95 backdrop-blur-xl border border-white/20 shadow-2xl">
+          <DialogHeader className="p-6 bg-gradient-to-r from-gray-50 to-white border-b border-white/10">
+            <DialogTitle className="text-xl font-bold text-white">
               {editingSite ? "Siteyi Düzenle" : "Yeni Site Ekle"}
             </DialogTitle>
           </DialogHeader>

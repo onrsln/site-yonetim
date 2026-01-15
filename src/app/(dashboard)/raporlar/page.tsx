@@ -106,8 +106,8 @@ export default function RaporlarPage() {
     <div className="space-y-8 animate-fade-in">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">Raporlar</h1>
-          <p className="text-gray-500 mt-1 text-lg">Detaylı raporlar oluşturun ve analiz edin</p>
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">Raporlar</h1>
+          <p className="text-slate-400 mt-1 text-lg">Detaylı raporlar oluşturun ve analiz edin</p>
         </div>
       </div>
 
@@ -115,45 +115,45 @@ export default function RaporlarPage() {
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
         <ModernCard padding="md" className="text-center">
           <Building2 className="h-8 w-8 text-blue-600 mx-auto mb-2" />
-          <p className="text-2xl font-bold text-gray-900">{reportStats.totalSites}</p>
-          <p className="text-xs text-gray-500 mt-1">Site</p>
+          <p className="text-2xl font-bold text-white">{reportStats.totalSites}</p>
+          <p className="text-xs text-slate-400 mt-1">Site</p>
         </ModernCard>
         <ModernCard padding="md" className="text-center">
           <Users className="h-8 w-8 text-indigo-600 mx-auto mb-2" />
-          <p className="text-2xl font-bold text-gray-900">{reportStats.totalApartments}</p>
-          <p className="text-xs text-gray-500 mt-1">Daire</p>
+          <p className="text-2xl font-bold text-white">{reportStats.totalApartments}</p>
+          <p className="text-xs text-slate-400 mt-1">Daire</p>
         </ModernCard>
         <ModernCard padding="md" className="text-center">
           <AlertTriangle className="h-8 w-8 text-orange-600 mx-auto mb-2" />
-          <p className="text-2xl font-bold text-gray-900">{reportStats.totalIssues}</p>
-          <p className="text-xs text-gray-500 mt-1">Eksiklik</p>
+          <p className="text-2xl font-bold text-white">{reportStats.totalIssues}</p>
+          <p className="text-xs text-slate-400 mt-1">Eksiklik</p>
         </ModernCard>
         <ModernCard padding="md" className="text-center">
           <TrendingUp className="h-8 w-8 text-green-600 mx-auto mb-2" />
-          <p className="text-2xl font-bold text-gray-900">₺{(reportStats.monthlyRevenue / 1000).toFixed(0)}K</p>
-          <p className="text-xs text-gray-500 mt-1">Gelir</p>
+          <p className="text-2xl font-bold text-white">₺{(reportStats.monthlyRevenue / 1000).toFixed(0)}K</p>
+          <p className="text-xs text-slate-400 mt-1">Gelir</p>
         </ModernCard>
         <ModernCard padding="md" className="text-center">
           <BarChart3 className="h-8 w-8 text-red-600 mx-auto mb-2" />
-          <p className="text-2xl font-bold text-gray-900">₺{(reportStats.monthlyExpense / 1000).toFixed(0)}K</p>
-          <p className="text-xs text-gray-500 mt-1">Gider</p>
+          <p className="text-2xl font-bold text-white">₺{(reportStats.monthlyExpense / 1000).toFixed(0)}K</p>
+          <p className="text-xs text-slate-400 mt-1">Gider</p>
         </ModernCard>
         <ModernCard padding="md" className="text-center">
           <PieChart className="h-8 w-8 text-purple-600 mx-auto mb-2" />
-          <p className="text-2xl font-bold text-gray-900">{reportStats.occupancyRate}%</p>
-          <p className="text-xs text-gray-500 mt-1">Doluluk</p>
+          <p className="text-2xl font-bold text-white">{reportStats.occupancyRate}%</p>
+          <p className="text-xs text-slate-400 mt-1">Doluluk</p>
         </ModernCard>
       </div>
 
       {/* Filters */}
-      <ModernCard padding="md" className="bg-white/80 backdrop-blur-sm">
+      <ModernCard padding="md" className="bg-slate-800/50/80 backdrop-blur-sm">
         <div className="flex flex-col md:flex-row gap-4">
           <div className="flex-1">
-            <label className="text-sm font-semibold text-gray-700 mb-2 block">Dönem Seçin</label>
+            <label className="text-sm font-semibold text-slate-200 mb-2 block">Dönem Seçin</label>
             <Select value={selectedPeriod} onValueChange={setSelectedPeriod}>
-              <SelectTrigger className="h-12 rounded-xl border-2 border-gray-200 bg-white focus:ring-2 focus:ring-primary-500">
+              <SelectTrigger className="h-12 rounded-xl border-2 border-white/10 bg-slate-800/50 focus:ring-2 focus:ring-primary-500">
                 <div className="flex items-center gap-2">
-                  <Calendar className="w-4 h-4 text-gray-500" />
+                  <Calendar className="w-4 h-4 text-slate-400" />
                   <SelectValue />
                 </div>
               </SelectTrigger>
@@ -167,11 +167,11 @@ export default function RaporlarPage() {
             </Select>
           </div>
           <div className="flex-1">
-            <label className="text-sm font-semibold text-gray-700 mb-2 block">Site Filtrele</label>
+            <label className="text-sm font-semibold text-slate-200 mb-2 block">Site Filtrele</label>
             <Select value={selectedSite} onValueChange={setSelectedSite}>
-              <SelectTrigger className="h-12 rounded-xl border-2 border-gray-200 bg-white focus:ring-2 focus:ring-primary-500">
+              <SelectTrigger className="h-12 rounded-xl border-2 border-white/10 bg-slate-800/50 focus:ring-2 focus:ring-primary-500">
                 <div className="flex items-center gap-2">
-                  <Filter className="w-4 h-4 text-gray-500" />
+                  <Filter className="w-4 h-4 text-slate-400" />
                   <SelectValue />
                 </div>
               </SelectTrigger>
@@ -187,14 +187,14 @@ export default function RaporlarPage() {
 
       {/* Report Templates */}
       <Tabs defaultValue="all" className="space-y-6">
-        <TabsList className="bg-white/50 p-1 rounded-xl border border-gray-200">
-          <TabsTrigger value="all" className="data-[state=active]:bg-white data-[state=active]:shadow-sm rounded-lg px-4 py-2">
+        <TabsList className="bg-slate-800/50/50 p-1 rounded-xl border border-white/10">
+          <TabsTrigger value="all" className="data-[state=active]:bg-slate-800/50 data-[state=active]:shadow-sm rounded-lg px-4 py-2">
             Tüm Raporlar
           </TabsTrigger>
-          <TabsTrigger value="financial" className="data-[state=active]:bg-white data-[state=active]:shadow-sm rounded-lg px-4 py-2">
+          <TabsTrigger value="financial" className="data-[state=active]:bg-slate-800/50 data-[state=active]:shadow-sm rounded-lg px-4 py-2">
             Mali
           </TabsTrigger>
-          <TabsTrigger value="operational" className="data-[state=active]:bg-white data-[state=active]:shadow-sm rounded-lg px-4 py-2">
+          <TabsTrigger value="operational" className="data-[state=active]:bg-slate-800/50 data-[state=active]:shadow-sm rounded-lg px-4 py-2">
             Operasyonel
           </TabsTrigger>
         </TabsList>
@@ -212,10 +212,10 @@ export default function RaporlarPage() {
                   </div>
                   
                   <div className="p-6">
-                    <h3 className="text-lg font-bold text-gray-900 group-hover:text-primary-600 transition-colors mb-2">
+                    <h3 className="text-lg font-bold text-white group-hover:text-primary-600 transition-colors mb-2">
                       {template.name}
                     </h3>
-                    <p className="text-sm text-gray-500 mb-4">
+                    <p className="text-sm text-slate-400 mb-4">
                       {template.description}
                     </p>
                     
@@ -256,10 +256,10 @@ export default function RaporlarPage() {
                   </div>
                   
                   <div className="p-6">
-                    <h3 className="text-lg font-bold text-gray-900 group-hover:text-primary-600 transition-colors mb-2">
+                    <h3 className="text-lg font-bold text-white group-hover:text-primary-600 transition-colors mb-2">
                       {template.name}
                     </h3>
-                    <p className="text-sm text-gray-500 mb-4">
+                    <p className="text-sm text-slate-400 mb-4">
                       {template.description}
                     </p>
                     
@@ -300,10 +300,10 @@ export default function RaporlarPage() {
                   </div>
                   
                   <div className="p-6">
-                    <h3 className="text-lg font-bold text-gray-900 group-hover:text-primary-600 transition-colors mb-2">
+                    <h3 className="text-lg font-bold text-white group-hover:text-primary-600 transition-colors mb-2">
                       {template.name}
                     </h3>
-                    <p className="text-sm text-gray-500 mb-4">
+                    <p className="text-sm text-slate-400 mb-4">
                       {template.description}
                     </p>
                     
@@ -340,14 +340,14 @@ export default function RaporlarPage() {
             { name: "Eksiklik Raporu - Haftalık", date: "2024-02-14", size: "128 KB" },
             { name: "Doluluk Raporu - Aylık", date: "2024-02-13", size: "89 KB" },
           ].map((report, index) => (
-            <div key={index} className="flex items-center justify-between p-4 rounded-xl bg-gray-50 border border-gray-100 hover:bg-gray-100 transition-colors">
+            <div key={index} className="flex items-center justify-between p-4 rounded-xl bg-slate-800/30 border border-white/10 hover:bg-slate-800/50 transition-colors">
               <div className="flex items-center gap-3">
-                <div className="p-2 rounded-lg bg-white">
+                <div className="p-2 rounded-lg bg-slate-800/50">
                   <FileSpreadsheet className="h-5 w-5 text-green-600" />
                 </div>
                 <div>
-                  <p className="font-medium text-gray-900">{report.name}</p>
-                  <p className="text-xs text-gray-500">{report.date} • {report.size}</p>
+                  <p className="font-medium text-white">{report.name}</p>
+                  <p className="text-xs text-slate-400">{report.date} • {report.size}</p>
                 </div>
               </div>
               <ModernButton size="sm" variant="ghost">
