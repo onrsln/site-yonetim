@@ -16,13 +16,13 @@ const ModernButton = React.forwardRef<HTMLButtonElement, ModernButtonProps>(
     const baseStyles = 'inline-flex items-center justify-center gap-2 font-medium rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed hover-lift'
     
     const variants = {
-      primary: 'bg-gradient-to-r from-primary-500 to-primary-600 text-white hover:from-primary-600 hover:to-primary-700 focus:ring-primary-500 shadow-soft',
-      secondary: 'bg-gradient-to-r from-secondary-500 to-secondary-600 text-white hover:from-secondary-600 hover:to-secondary-700 focus:ring-secondary-500 shadow-soft',
-      success: 'bg-gradient-to-r from-success-500 to-success-600 text-white hover:from-success-600 hover:to-success-700 focus:ring-success-500 shadow-soft',
-      warning: 'bg-gradient-to-r from-warning-500 to-warning-600 text-white hover:from-warning-600 hover:to-warning-700 focus:ring-warning-500 shadow-soft',
-      danger: 'bg-gradient-to-r from-danger-500 to-danger-600 text-white hover:from-danger-600 hover:to-danger-700 focus:ring-danger-500 shadow-soft',
-      ghost: 'bg-transparent text-secondary-700 hover:bg-secondary-100 focus:ring-secondary-500',
-      outline: 'border-2 border-secondary-300 text-secondary-700 hover:bg-secondary-50 focus:ring-secondary-500',
+      primary: 'bg-gradient-to-r from-[#0ea5e9] to-[#06b6d4] text-white hover:from-[#0284c7] hover:to-[#0891b2] focus:ring-[#0ea5e9] shadow-lg',
+      secondary: 'bg-gradient-to-r from-[#334155] to-[#475569] text-white hover:from-[#475569] hover:to-[#64748b] focus:ring-[#334155] shadow-lg',
+      success: 'bg-gradient-to-r from-[#10b981] to-[#059669] text-white hover:from-[#059669] hover:to-[#047857] focus:ring-[#10b981] shadow-lg',
+      warning: 'bg-gradient-to-r from-[#f59e0b] to-[#d97706] text-white hover:from-[#d97706] hover:to-[#b45309] focus:ring-[#f59e0b] shadow-lg',
+      danger: 'bg-gradient-to-r from-[#ef4444] to-[#dc2626] text-white hover:from-[#dc2626] hover:to-[#b91c1c] focus:ring-[#ef4444] shadow-lg',
+      ghost: 'bg-transparent text-[#e2e8f0] hover:bg-[#1a2942] focus:ring-[#0ea5e9]',
+      outline: 'border-2 border-[#2d3f5f] text-[#e2e8f0] hover:bg-[#1a2942] focus:ring-[#0ea5e9]',
     }
     
     const sizes = {

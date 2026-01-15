@@ -3,19 +3,28 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 :root {
-  /* Modern renk paleti */
-  --background: #ffffff;
-  --foreground: #0f172a;
-  --muted: #f8fafc;
-  --muted-foreground: #64748b;
-  --popover: #ffffff;
-  --popover-foreground: #0f172a;
-  --card: #ffffff;
-  --card-foreground: #0f172a;
-  --border: #e2e8f0;
-  --input: #f1f5f9;
-  --ring: #3b82f6;
-  --radius: 0.5rem;
+  /* Dark Blue Theme - Resimlerdeki tema */
+  --background: #0a1628;
+  --foreground: #e2e8f0;
+  --muted: #1a2942;
+  --muted-foreground: #94a3b8;
+  --popover: #1a2942;
+  --popover-foreground: #e2e8f0;
+  --card: #1a2942;
+  --card-foreground: #e2e8f0;
+  --border: #2d3f5f;
+  --input: #1a2942;
+  --ring: #0ea5e9;
+  --radius: 0.75rem;
+  
+  /* Accent colors */
+  --primary: #0ea5e9;
+  --primary-dark: #0284c7;
+  --secondary: #334155;
+  --accent: #06b6d4;
+  --success: #10b981;
+  --danger: #ef4444;
+  --warning: #f59e0b;
 }
 
 @theme inline {
@@ -25,24 +34,24 @@
   --font-mono: 'Inter', system-ui, sans-serif;
 }
 
-/* Modern scrollbar */
+/* Modern scrollbar - Dark theme */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f5f9;
+  background: #1a2942;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
+  background: #334155;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+  background: #475569;
 }
 
 /* Smooth transitions */

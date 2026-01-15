@@ -29,9 +29,9 @@ export default function DashboardLayout({
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-[#0a1628]">
       <Sidebar />
-      <main className="lg:pl-64 min-h-screen">
+      <main className="lg:pl-72 min-h-screen">
         <div className="p-4 lg:p-8 pt-20 lg:pt-8">
           {children}
         </div>
