@@ -370,6 +370,17 @@ export default function EksikliklerPage() {
                              issue.priority === 'MEDIUM' ? '#3b82f6' : '#94a3b8' 
             }}>
               <div className="flex flex-col md:flex-row md:items-center gap-4 justify-between">
+                {/* Media Thumbnail */}
+                {issue.media.length > 0 && issue.media[0].type === 'IMAGE' && (
+                  <div className="md:w-24 md:h-24 w-full h-32 rounded-lg overflow-hidden bg-slate-800/50 flex-shrink-0">
+                    <img 
+                      src={issue.media[0].url} 
+                      alt={issue.title}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                    />
+                  </div>
+                )}
+
                 <div className="flex-1 min-w-0">
                   <div className="flex flex-wrap items-center gap-2 mb-2">
                     <ModernBadge variant={priorityVariants[issue.priority]} size="sm">
@@ -402,13 +413,13 @@ export default function EksikliklerPage() {
                       {formatDateTime(issue.createdAt)}
                     </div>
                     {issue.media.length > 0 && (
-                      <div className="flex items-center gap-1.5 text-primary-600">
+                      <div className="flex items-center gap-1.5 text-cyan-400">
                         <Camera className="h-3.5 w-3.5" />
                         {issue.media.length} medya
                       </div>
                     )}
                     {issue._count.comments > 0 && (
-                      <div className="flex items-center gap-1.5 text-blue-600">
+                      <div className="flex items-center gap-1.5 text-blue-400">
                         <MessageSquare className="h-3.5 w-3.5" />
                         {issue._count.comments} yorum
                       </div>
