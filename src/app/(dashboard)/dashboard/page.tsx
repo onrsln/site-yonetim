@@ -1,8 +1,10 @@
 "use client"
 
 import { useSession } from "next-auth/react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
+import { ModernCard } from "@/components/ui/modern-card"
+import { ModernButton } from "@/components/ui/modern-button"
+import { ModernBadge } from "@/components/ui/modern-badge"
+import type { LucideIcon } from "lucide-react"
 import {
   Building2,
   Building,
@@ -14,6 +16,10 @@ import {
   Clock,
   TrendingUp,
   Users,
+  Plus,
+  ArrowUp,
+  ArrowDown,
+  MoreHorizontal,
 } from "lucide-react"
 
 const stats = [
@@ -21,44 +27,50 @@ const stats = [
     title: "Toplam Site",
     value: "1",
     icon: Building2,
-    color: "text-blue-600",
-    bgColor: "bg-blue-100",
+    change: "+0",
+    changeType: "neutral",
+    variant: "primary"
   },
   {
     title: "Toplam Blok",
     value: "8",
     icon: Building,
-    color: "text-indigo-600",
-    bgColor: "bg-indigo-100",
+    change: "+2",
+    changeType: "increase",
+    variant: "secondary"
   },
   {
     title: "Toplam Daire",
     value: "256",
     icon: Home,
-    color: "text-green-600",
-    bgColor: "bg-green-100",
+    change: "+16",
+    changeType: "increase",
+    variant: "success"
   },
   {
     title: "Açık Eksiklik",
     value: "12",
     icon: AlertTriangle,
-    color: "text-red-600",
-    bgColor: "bg-red-100",
+    change: "-3",
+    changeType: "decrease",
+    variant: "danger"
   },
   {
     title: "Demirbaş",
     value: "145",
     icon: Package,
-    color: "text-purple-600",
-    bgColor: "bg-purple-100",
+    change: "+12",
+    changeType: "increase",
+    variant: "warning"
   },
   {
-    title: "Planlı Bakım",
-    value: "5",
-    icon: Wrench,
-    color: "text-orange-600",
-    bgColor: "bg-orange-100",
-  },
+    title: "Personel",
+    value: "8",
+    icon: Users,
+    change: "+1",
+    changeType: "increase",
+    variant: "info"
+  }
 ]
 
 const recentIssues = [
