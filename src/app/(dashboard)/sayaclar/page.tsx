@@ -15,7 +15,10 @@ import {
   Building2,
   Zap,
   Droplet,
-  Flame
+  Flame,
+  Camera,
+  AlertTriangle,
+  BarChart3
 } from "lucide-react"
 import { ModernButton } from "@/components/ui/modern-button"
 import { ModernCard } from "@/components/ui/modern-card"
@@ -105,6 +108,26 @@ export default function SayaclarPage() {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
   const [filterType, setFilterType] = useState("all")
+  const [selectedImage, setSelectedImage] = useState<File | null>(null)
+  const [imagePreview, setImagePreview] = useState<string | null>(null)
+  const [formData, setFormData] = useState({
+    meterType: "ELECTRIC",
+    meterNumber: "",
+    reading: "",
+    notes: "",
+  })
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file) {
+      setSelectedImage(file)
+      const reader = new FileReader()
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string)
+      }
+      reader.readAsDataURL(file)
+    }
+  }
 
   // Filtered data
   const filteredMeters = meters.filter(item => {
@@ -129,28 +152,28 @@ export default function SayaclarPage() {
 
       {/* Stats Cards */}
       <div className="grid md:grid-cols-3 gap-6">
-        <ModernCard padding="md" className="bg-gradient-to-br from-yellow-50 to-orange-50 border-yellow-200">
+        <ModernCard padding="md" className="bg-gradient-to-br from-yellow-500/20 to-orange-500/20 border-yellow-500/30">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm font-medium text-slate-300">Toplam Elektrik</p>
               <p className="text-3xl font-bold text-white mt-1">1,250 kWh</p>
               <p className="text-xs text-slate-400 mt-1">Bu ay</p>
             </div>
-            <div className="p-4 rounded-xl bg-yellow-100">
-              <Zap className="h-8 w-8 text-yellow-600" />
+            <div className="p-4 rounded-xl bg-gradient-to-br from-yellow-600 to-orange-600 shadow-lg shadow-yellow-500/50">
+              <Zap className="h-8 w-8 text-white" />
             </div>
           </div>
         </ModernCard>
 
-        <ModernCard padding="md" className="bg-gradient-to-br from-blue-50 to-cyan-50 border-blue-200">
+        <ModernCard padding="md" className="bg-gradient-to-br from-blue-500/20 to-cyan-500/20 border-blue-500/30">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm font-medium text-slate-300">Toplam Su</p>
               <p className="text-3xl font-bold text-white mt-1">850 m³</p>
               <p className="text-xs text-slate-400 mt-1">Bu ay</p>
             </div>
-            <div className="p-4 rounded-xl bg-blue-100">
-              <Droplet className="h-8 w-8 text-blue-600" />
+            <div className="p-4 rounded-xl bg-gradient-to-br from-blue-600 to-cyan-600 shadow-lg shadow-blue-500/50">
+              <Droplet className="h-8 w-8 text-white" />
             </div>
           </div>
         </ModernCard>
