@@ -99,9 +99,13 @@ async function seedData() {
       admin: { email: admin.email, password: "admin123" },
       site: site.name,
     })
-  } catch (error) {
+  } catch (error: any) {
     console.error("Seed error:", error)
-    return NextResponse.json({ error: "Seed hatası" }, { status: 500 })
+    return NextResponse.json({ 
+      error: "Seed hatası", 
+      details: error?.message || "Bilinmeyen hata",
+      hint: "Veritabanı tabloları oluşturulmamış olabilir. Vercel Dashboard'dan Neon veritabanınızı kontrol edin."
+    }, { status: 500 })
   }
 }
 
