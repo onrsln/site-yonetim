@@ -1,0 +1,546 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ==================== KULLANICI YÖNETİMİ ====================
+
+model User {
+  id             String    @id @default(cuid())
+  email          String    @unique
+  password       String
+  name           String
+  role           Role      @default(USER)
+  phone          String?
+  avatar         String?
+  isActive       Boolean   @default(true)
+  emailVerified  DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  // İlişkiler
+  sessions       Session[]
+  accounts       Account[]
+  siteAccess     SiteAccess[]
+  createdIssues  Issue[]        @relation("CreatedBy")
+  assignedIssues Issue[]        @relation("AssignedTo")
+  activityLogs   ActivityLog[]
+  notifications  Notification[]
+  comments       Comment[]
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+enum Role {
+  ADMIN
+  MANAGER
+  TECHNICIAN
+  USER
+  VIEWER
+}
+
+model SiteAccess {
+  id        String   @id @default(cuid())
+  userId    String
+  siteId    String
+  canView   Boolean  @default(true)
+  canEdit   Boolean  @default(false)
+  canDelete Boolean  @default(false)
+  canReport Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  site Site @relation(fields: [siteId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, siteId])
+}
+
+// ==================== SİTE YAPISI ====================
+
+model Site {
+  id          String   @id @default(cuid())
+  name        String
+  address     String?
+  city        String?
+  district    String?
+  description String?
+  image       String?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // İlişkiler
+  blocks      Block[]
+  commonAreas CommonArea[]
+  siteAccess  SiteAccess[]
+  issues      Issue[]
+  assets      Asset[]
+}
+
+model Block {
+  id          String   @id @default(cuid())
+  name        String
+  siteId      String
+  description String?
+  totalFloors Int      @default(0)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  site   Site    @relation(fields: [siteId], references: [id], onDelete: Cascade)
+  floors Floor[]
+  issues Issue[]
+  assets Asset[]
+}
+
+model Floor {
+  id          String   @id @default(cuid())
+  name        String
+  number      Int
+  blockId     String
+  description String?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  block      Block       @relation(fields: [blockId], references: [id], onDelete: Cascade)
+  apartments Apartment[]
+  floorAreas FloorArea[]
+  issues     Issue[]
+  assets     Asset[]
+}
+
+model Apartment {
+  id          String   @id @default(cuid())
+  number      String
+  floorId     String
+  type        String?
+  area        Float?
+  roomCount   Int?
+  ownerName   String?
+  ownerPhone  String?
+  ownerEmail  String?
+  tenantName  String?
+  tenantPhone String?
+  isOccupied  Boolean  @default(false)
+  description String?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  floor  Floor   @relation(fields: [floorId], references: [id], onDelete: Cascade)
+  issues Issue[]
+  assets Asset[]
+}
+
+// ==================== ALAN TÜRLERİ ====================
+
+model FloorArea {
+  id          String        @id @default(cuid())
+  name        String
+  type        FloorAreaType
+  floorId     String
+  description String?
+  area        Float?
+  isActive    Boolean       @default(true)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  floor  Floor   @relation(fields: [floorId], references: [id], onDelete: Cascade)
+  issues Issue[]
+  assets Asset[]
+}
+
+enum FloorAreaType {
+  STAIRCASE
+  ELEVATOR_PASSENGER
+  ELEVATOR_FREIGHT
+  ELEVATOR_SERVICE
+  METER_SHAFT
+  ELECTRICAL_ROOM
+  GARBAGE_AREA
+  FIRE_CABINET
+  CORRIDOR
+  LOBBY
+  OTHER
+}
+
+model CommonArea {
+  id          String         @id @default(cuid())
+  name        String
+  type        CommonAreaType
+  siteId      String
+  description String?
+  area        Float?
+  capacity    Int?
+  isActive    Boolean        @default(true)
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  site   Site    @relation(fields: [siteId], references: [id], onDelete: Cascade)
+  issues Issue[]
+  assets Asset[]
+}
+
+enum CommonAreaType {
+  PLAYGROUND
+  SPA
+  SAUNA
+  FITNESS
+  HAMMAM
+  GENERATOR
+  TRANSFORMER
+  PARKING
+  PARKING_INDOOR
+  GARDEN
+  POOL
+  MEETING_ROOM
+  SECURITY
+  MANAGEMENT_OFFICE
+  WAREHOUSE
+  OTHER
+}
+
+// ==================== DEMİRBAŞ YÖNETİMİ ====================
+
+model Asset {
+  id             String      @id @default(cuid())
+  name           String
+  code           String?     @unique
+  barcode        String?
+  category       String
+  brand          String?
+  model          String?
+  serialNumber   String?
+  purchaseDate   DateTime?
+  purchasePrice  Float?
+  currentValue   Float?
+  warrantyEnd    DateTime?
+  status         AssetStatus @default(ACTIVE)
+  quantity       Int         @default(1)
+  minQuantity    Int?
+  description    String?
+  image          String?
+  
+  // Konum (biri dolu olmalı)
+  siteId         String?
+  blockId        String?
+  floorId        String?
+  apartmentId    String?
+  floorAreaId    String?
+  commonAreaId   String?
+  
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+
+  site       Site?       @relation(fields: [siteId], references: [id])
+  block      Block?      @relation(fields: [blockId], references: [id])
+  floor      Floor?      @relation(fields: [floorId], references: [id])
+  apartment  Apartment?  @relation(fields: [apartmentId], references: [id])
+  floorArea  FloorArea?  @relation(fields: [floorAreaId], references: [id])
+  commonArea CommonArea? @relation(fields: [commonAreaId], references: [id])
+  
+  issues          Issue[]
+  maintenances    Maintenance[]
+  locationHistory AssetLocationHistory[]
+}
+
+enum AssetStatus {
+  ACTIVE
+  INACTIVE
+  MAINTENANCE
+  BROKEN
+  DISPOSED
+}
+
+model AssetLocationHistory {
+  id          String   @id @default(cuid())
+  assetId     String
+  fromLocation String?
+  toLocation  String
+  movedBy     String?
+  reason      String?
+  createdAt   DateTime @default(now())
+
+  asset Asset @relation(fields: [assetId], references: [id], onDelete: Cascade)
+}
+
+// ==================== EKSİKLİK/ARIZA YÖNETİMİ ====================
+
+model Issue {
+  id          String        @id @default(cuid())
+  title       String
+  description String?
+  type        IssueType     @default(DEFICIENCY)
+  priority    IssuePriority @default(MEDIUM)
+  status      IssueStatus   @default(OPEN)
+  
+  // Konum
+  siteId      String?
+  blockId     String?
+  floorId     String?
+  apartmentId String?
+  floorAreaId String?
+  commonAreaId String?
+  assetId     String?
+  
+  // Atama
+  createdById  String
+  assignedToId String?
+  
+  // SLA
+  dueDate      DateTime?
+  resolvedAt   DateTime?
+  
+  // Maliyet
+  estimatedCost Float?
+  actualCost    Float?
+  
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  site       Site?       @relation(fields: [siteId], references: [id])
+  block      Block?      @relation(fields: [blockId], references: [id])
+  floor      Floor?      @relation(fields: [floorId], references: [id])
+  apartment  Apartment?  @relation(fields: [apartmentId], references: [id])
+  floorArea  FloorArea?  @relation(fields: [floorAreaId], references: [id])
+  commonArea CommonArea? @relation(fields: [commonAreaId], references: [id])
+  asset      Asset?      @relation(fields: [assetId], references: [id])
+  createdBy  User        @relation("CreatedBy", fields: [createdById], references: [id])
+  assignedTo User?       @relation("AssignedTo", fields: [assignedToId], references: [id])
+  
+  media    Media[]
+  comments Comment[]
+}
+
+enum IssueType {
+  DEFICIENCY
+  MALFUNCTION
+  MAINTENANCE
+  COMPLAINT
+  SUGGESTION
+  OTHER
+}
+
+enum IssuePriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+enum IssueStatus {
+  OPEN
+  IN_PROGRESS
+  WAITING
+  RESOLVED
+  CLOSED
+  CANCELLED
+}
+
+model Media {
+  id          String    @id @default(cuid())
+  url         String
+  type        MediaType
+  filename    String?
+  size        Int?
+  description String?
+  issueId     String
+  createdAt   DateTime  @default(now())
+
+  issue Issue @relation(fields: [issueId], references: [id], onDelete: Cascade)
+}
+
+enum MediaType {
+  IMAGE
+  VIDEO
+  DOCUMENT
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  content   String
+  issueId   String
+  userId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  issue Issue @relation(fields: [issueId], references: [id], onDelete: Cascade)
+  user  User  @relation(fields: [userId], references: [id])
+}
+
+// ==================== BAKIM YÖNETİMİ ====================
+
+model Maintenance {
+  id            String            @id @default(cuid())
+  title         String
+  description   String?
+  type          MaintenanceType
+  status        MaintenanceStatus @default(SCHEDULED)
+  assetId       String?
+  scheduledDate DateTime
+  completedDate DateTime?
+  cost          Float?
+  vendor        String?
+  notes         String?
+  isRecurring   Boolean           @default(false)
+  recurringDays Int?
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+
+  asset      Asset?              @relation(fields: [assetId], references: [id])
+  checklists MaintenanceChecklist[]
+}
+
+enum MaintenanceType {
+  PREVENTIVE
+  CORRECTIVE
+  INSPECTION
+  CLEANING
+  OTHER
+}
+
+enum MaintenanceStatus {
+  SCHEDULED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+  OVERDUE
+}
+
+model MaintenanceChecklist {
+  id            String   @id @default(cuid())
+  maintenanceId String
+  item          String
+  isCompleted   Boolean  @default(false)
+  notes         String?
+  completedAt   DateTime?
+
+  maintenance Maintenance @relation(fields: [maintenanceId], references: [id], onDelete: Cascade)
+}
+
+// ==================== SAYAÇ TAKİBİ ====================
+
+model Meter {
+  id          String    @id @default(cuid())
+  type        MeterType
+  number      String
+  location    String
+  apartmentId String?
+  commonAreaId String?
+  lastReading Float?
+  lastReadDate DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  readings MeterReading[]
+}
+
+enum MeterType {
+  ELECTRICITY
+  WATER
+  GAS
+  HEATING
+}
+
+model MeterReading {
+  id        String   @id @default(cuid())
+  meterId   String
+  value     Float
+  image     String?
+  readDate  DateTime @default(now())
+  readBy    String?
+  notes     String?
+
+  meter Meter @relation(fields: [meterId], references: [id], onDelete: Cascade)
+}
+
+// ==================== BİLDİRİM SİSTEMİ ====================
+
+model Notification {
+  id        String           @id @default(cuid())
+  userId    String
+  title     String
+  message   String
+  type      NotificationType
+  isRead    Boolean          @default(false)
+  link      String?
+  createdAt DateTime         @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+enum NotificationType {
+  INFO
+  WARNING
+  ERROR
+  SUCCESS
+  ISSUE
+  MAINTENANCE
+  SYSTEM
+}
+
+// ==================== AKTİVİTE LOGLARI ====================
+
+model ActivityLog {
+  id         String   @id @default(cuid())
+  userId     String
+  action     String
+  entity     String
+  entityId   String?
+  details    String?
+  ipAddress  String?
+  userAgent  String?
+  createdAt  DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+// ==================== RAPOR ŞABLONLARI ====================
+
+model ReportTemplate {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  type        String
+  template    String
+  isDefault   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
