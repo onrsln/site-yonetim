@@ -14,7 +14,10 @@ import {
   MapPin,
   Calendar,
   User,
-  MessageSquare
+  MessageSquare,
+  Upload,
+  Video,
+  X
 } from "lucide-react"
 import { ModernButton } from "@/components/ui/modern-button"
 import { ModernCard } from "@/components/ui/modern-card"
@@ -101,13 +104,20 @@ export default function EksikliklerPage() {
     description: "",
     type: "DEFICIENCY",
     priority: "MEDIUM",
+    status: "OPEN",
     siteId: "",
     blockId: "",
+    assignedToId: "",
   })
+  const [users, setUsers] = useState<{ id: string; name: string }[]>([])
+  const [selectedImages, setSelectedImages] = useState<File[]>([])
+  const [selectedVideos, setSelectedVideos] = useState<File[]>([])
+  const [imagePreview, setImagePreview] = useState<string[]>([])
 
   useEffect(() => {
     fetchIssues()
     fetchSites()
+    fetchUsers()
   }, [])
 
   const fetchIssues = async () => {
@@ -140,6 +150,44 @@ export default function EksikliklerPage() {
     } catch (error) {
       console.error("Error fetching blocks:", error)
     }
+  }
+
+  const fetchUsers = async () => {
+    try {
+      const res = await fetch("/api/users")
+      const data = await res.json()
+      setUsers(data)
+    } catch (error) {
+      console.error("Error fetching users:", error)
+    }
+  }
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || [])
+    setSelectedImages(prev => [...prev, ...files])
+    
+    // Create preview URLs
+    files.forEach(file => {
+      const reader = new FileReader()
+      reader.onloadend = () => {
+        setImagePreview(prev => [...prev, reader.result as string])
+      }
+      reader.readAsDataURL(file)
+    })
+  }
+
+  const handleVideoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || [])
+    setSelectedVideos(prev => [...prev, ...files])
+  }
+
+  const removeImage = (index: number) => {
+    setSelectedImages(prev => prev.filter((_, i) => i !== index))
+    setImagePreview(prev => prev.filter((_, i) => i !== index))
+  }
+
+  const removeVideo = (index: number) => {
+    setSelectedVideos(prev => prev.filter((_, i) => i !== index))
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -177,10 +225,15 @@ export default function EksikliklerPage() {
       description: "",
       type: "DEFICIENCY",
       priority: "MEDIUM",
+      status: "OPEN",
       siteId: "",
       blockId: "",
+      assignedToId: "",
     })
     setBlocks([])
+    setSelectedImages([])
+    setSelectedVideos([])
+    setImagePreview([])
   }
 
   const filteredIssues = issues.filter((issue) => {
@@ -380,7 +433,7 @@ export default function EksikliklerPage() {
       {/* New Issue Dialog */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="max-w-lg p-0 overflow-hidden bg-slate-800/50/95 backdrop-blur-xl border border-white/20 shadow-2xl">
-          <DialogHeader className="p-6 bg-gradient-to-r from-gray-50 to-white border-b border-white/10">
+          <DialogHeader className="p-6 bg-slate-800/50 border-b border-white/10">
             <DialogTitle className="text-xl font-bold text-white">Yeni Eksiklik Ekle</DialogTitle>
           </DialogHeader>
           <form onSubmit={handleSubmit} className="p-6 space-y-4">
@@ -475,6 +528,113 @@ export default function EksikliklerPage() {
               placeholder="Eksiklik hakkında detaylı açıklama"
               rows={4}
             />
+
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <label className="text-sm font-semibold text-slate-200">Durum</label>
+                <Select
+                  value={formData.status}
+                  onValueChange={(value) => setFormData({ ...formData, status: value })}
+                >
+                  <SelectTrigger className="h-12 rounded-xl border-2 border-white/10 bg-slate-800/50">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {Object.entries(issueStatusLabels).map(([value, label]) => (
+                      <SelectItem key={value} value={value}>{label}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-semibold text-slate-200">Teknisyen Ata</label>
+                <Select
+                  value={formData.assignedToId}
+                  onValueChange={(value) => setFormData({ ...formData, assignedToId: value })}
+                >
+                  <SelectTrigger className="h-12 rounded-xl border-2 border-white/10 bg-slate-800/50">
+                    <SelectValue placeholder="Seçiniz" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="">Atanmadı</SelectItem>
+                    {users.map((user) => (
+                      <SelectItem key={user.id} value={user.id}>{user.name}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+
+            {/* Fotoğraf Yükleme */}
+            <div className="space-y-2">
+              <label className="text-sm font-semibold text-slate-200">Fotoğraflar</label>
+              <div className="flex flex-col gap-3">
+                <label className="flex items-center justify-center gap-2 px-4 py-3 rounded-xl border-2 border-dashed border-white/20 hover:border-cyan-500/50 bg-slate-800/30 hover:bg-slate-800/50 cursor-pointer transition-all">
+                  <Camera className="w-5 h-5 text-slate-400" />
+                  <span className="text-sm text-slate-300">Fotoğraf Ekle</span>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    onChange={handleImageChange}
+                    className="hidden"
+                  />
+                </label>
+                {imagePreview.length > 0 && (
+                  <div className="grid grid-cols-3 gap-2">
+                    {imagePreview.map((preview, index) => (
+                      <div key={index} className="relative group">
+                        <img src={preview} alt={`Preview ${index + 1}`} className="w-full h-24 object-cover rounded-lg" />
+                        <button
+                          type="button"
+                          onClick={() => removeImage(index)}
+                          className="absolute top-1 right-1 p-1 rounded-full bg-red-500 text-white opacity-0 group-hover:opacity-100 transition-opacity"
+                        >
+                          <X className="w-3 h-3" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Video Yükleme */}
+            <div className="space-y-2">
+              <label className="text-sm font-semibold text-slate-200">Videolar</label>
+              <div className="flex flex-col gap-3">
+                <label className="flex items-center justify-center gap-2 px-4 py-3 rounded-xl border-2 border-dashed border-white/20 hover:border-purple-500/50 bg-slate-800/30 hover:bg-slate-800/50 cursor-pointer transition-all">
+                  <Video className="w-5 h-5 text-slate-400" />
+                  <span className="text-sm text-slate-300">Video Ekle</span>
+                  <input
+                    type="file"
+                    accept="video/*"
+                    multiple
+                    onChange={handleVideoChange}
+                    className="hidden"
+                  />
+                </label>
+                {selectedVideos.length > 0 && (
+                  <div className="space-y-2">
+                    {selectedVideos.map((video, index) => (
+                      <div key={index} className="flex items-center justify-between p-2 rounded-lg bg-slate-800/50 border border-white/10">
+                        <div className="flex items-center gap-2">
+                          <Video className="w-4 h-4 text-purple-400" />
+                          <span className="text-sm text-slate-300 truncate">{video.name}</span>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => removeVideo(index)}
+                          className="p-1 rounded-full hover:bg-red-500/20 text-red-400 transition-colors"
+                        >
+                          <X className="w-4 h-4" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
 
             <DialogFooter className="gap-2 mt-4">
               <ModernButton type="button" variant="ghost" onClick={() => setIsDialogOpen(false)}>
