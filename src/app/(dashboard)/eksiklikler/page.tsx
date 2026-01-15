@@ -432,7 +432,7 @@ export default function EksikliklerPage() {
 
       {/* New Issue Dialog */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="max-w-lg p-0 overflow-hidden bg-slate-800/50/95 backdrop-blur-xl border border-white/20 shadow-2xl">
+        <DialogContent className="max-w-lg p-0 overflow-hidden bg-slate-800/95 backdrop-blur-xl border border-white/20 shadow-2xl max-h-[90vh] overflow-y-auto">
           <DialogHeader className="p-6 bg-slate-800/50 border-b border-white/10">
             <DialogTitle className="text-xl font-bold text-white">Yeni Eksiklik Ekle</DialogTitle>
           </DialogHeader>
