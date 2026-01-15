@@ -5,16 +5,17 @@ import { prisma } from "@/lib/prisma"
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
     const session = await getServerSession(authOptions)
     if (!session) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
     const site = await prisma.site.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: {
         blocks: {
           where: { isActive: true },
@@ -47,9 +48,10 @@ export async function GET(
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
     const session = await getServerSession(authOptions)
     if (!session) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
@@ -59,7 +61,7 @@ export async function PUT(
     const { name, address, city, district, description, isActive } = body
 
     const site = await prisma.site.update({
-      where: { id: params.id },
+      where: { id },
       data: {
         name,
         address,
@@ -79,16 +81,17 @@ export async function PUT(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
     const session = await getServerSession(authOptions)
     if (!session) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
     await prisma.site.update({
-      where: { id: params.id },
+      where: { id },
       data: { isActive: false },
     })
 
