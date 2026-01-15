@@ -163,18 +163,24 @@ export default function EksikliklerPage() {
     }
   }
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || [])
+    if (files.length === 0) return
+    
     setSelectedImages(prev => [...prev, ...files])
     
-    // Create preview URLs
-    files.forEach(file => {
-      const reader = new FileReader()
-      reader.onloadend = () => {
-        setImagePreview(prev => [...prev, reader.result as string])
-      }
-      reader.readAsDataURL(file)
-    })
+    // Create preview URLs for all files
+    const previews = await Promise.all(
+      files.map(file => {
+        return new Promise<string>((resolve) => {
+          const reader = new FileReader()
+          reader.onloadend = () => resolve(reader.result as string)
+          reader.readAsDataURL(file)
+        })
+      })
+    )
+    
+    setImagePreview(prev => [...prev, ...previews])
   }
 
   const handleVideoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
