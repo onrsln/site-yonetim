@@ -335,12 +335,7 @@ export default function DairelerPage() {
         <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {filteredApartments.map((apt) => (
             <ModernCard key={apt.id} hover padding="none" className="overflow-hidden group">
-              <div className={`h-24 bg-gradient-to-br ${
-                apt.status === 'OCCUPIED' ? 'from-green-500 to-emerald-600' :
-                apt.status === 'EMPTY' ? 'from-gray-400 to-gray-500' :
-                apt.status === 'MAINTENANCE' ? 'from-yellow-400 to-orange-500' :
-                'from-red-400 to-pink-500'
-              } relative`}>
+              <div className="h-24 bg-gradient-to-br from-slate-700 to-slate-800 relative">
                 <div className="absolute top-4 right-4 z-10">
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -364,13 +359,8 @@ export default function DairelerPage() {
                   </DropdownMenu>
                 </div>
                 <div className="absolute -bottom-6 left-6">
-                  <div className="p-3 rounded-xl bg-slate-800/50 shadow-md border border-white/10">
-                    <Home className={`h-8 w-8 ${
-                      apt.status === 'OCCUPIED' ? 'text-green-600' :
-                      apt.status === 'EMPTY' ? 'text-slate-400' :
-                      apt.status === 'MAINTENANCE' ? 'text-yellow-500' :
-                      'text-red-500'
-                    }`} />
+                  <div className="p-3 rounded-xl bg-gradient-to-br from-orange-500 to-red-500 shadow-lg shadow-orange-500/50">
+                    <Home className="h-8 w-8 text-white" />
                   </div>
                 </div>
               </div>
@@ -378,7 +368,7 @@ export default function DairelerPage() {
               <div className="pt-10 px-6 pb-6">
                 <div className="flex justify-between items-start">
                   <div>
-                    <h3 className="text-xl font-bold text-white group-hover:text-blue-600 transition-colors">
+                    <h3 className="text-xl font-bold text-white group-hover:text-orange-400 transition-colors">
                       Daire {apt.number}
                     </h3>
                     <div className="flex items-center gap-1.5 mt-1 text-sm text-slate-400">
@@ -395,23 +385,56 @@ export default function DairelerPage() {
                   </ModernBadge>
                 </div>
 
-                <div className="mt-6 space-y-3">
-                  <div className="flex items-center justify-between p-2.5 rounded-lg bg-slate-800/30 border border-white/10">
-                    <div className="flex items-center gap-2 text-slate-400">
-                      <Layers className="h-4 w-4" />
-                      <span className="text-xs font-medium">Tip</span>
+                <div className="mt-4 grid grid-cols-2 gap-2">
+                  <div className="p-2 rounded-lg bg-slate-800/30 border border-white/10">
+                    <div className="flex items-center gap-1.5 text-slate-400 mb-1">
+                      <Layers className="h-3.5 w-3.5" />
+                      <span className="text-xs font-medium">Soğuk Su</span>
                     </div>
-                    <span className="text-sm font-semibold text-white">{apt.type}</span>
+                    <span className="text-sm font-bold text-white">{apt.number}001</span>
                   </div>
-
-                  <div className="flex items-center justify-between p-2.5 rounded-lg bg-slate-800/30 border border-white/10">
-                    <div className="flex items-center gap-2 text-slate-400">
-                      <User className="h-4 w-4" />
-                      <span className="text-xs font-medium">Sakin</span>
+                  <div className="p-2 rounded-lg bg-slate-800/30 border border-white/10">
+                    <div className="flex items-center gap-1.5 text-slate-400 mb-1">
+                      <Layers className="h-3.5 w-3.5" />
+                      <span className="text-xs font-medium">Sıcak Su</span>
                     </div>
-                    <span className="text-sm font-semibold text-white truncate max-w-[100px]">
-                      {apt.tenant?.name || apt.owner?.name || "-"}
-                    </span>
+                    <span className="text-sm font-bold text-white">-</span>
+                  </div>
+                  <div className="p-2 rounded-lg bg-slate-800/30 border border-white/10">
+                    <div className="flex items-center gap-1.5 text-slate-400 mb-1">
+                      <Layers className="h-3.5 w-3.5" />
+                      <span className="text-xs font-medium">Elektrik</span>
+                    </div>
+                    <span className="text-sm font-bold text-white">-</span>
+                  </div>
+                  <div className="p-2 rounded-lg bg-slate-800/30 border border-white/10">
+                    <div className="flex items-center gap-1.5 text-slate-400 mb-1">
+                      <Layers className="h-3.5 w-3.5" />
+                      <span className="text-xs font-medium">Doğalgaz</span>
+                    </div>
+                    <span className="text-sm font-bold text-white">-</span>
+                  </div>
+                </div>
+
+                <div className="mt-6 pt-4 border-t border-white/10 space-y-2">
+                  <ModernButton className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700" size="sm">
+                    Sayaç Okumaları
+                  </ModernButton>
+                  <div className="grid grid-cols-2 gap-2">
+                    <ModernButton className="w-full bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700" size="sm" onClick={() => openEditDialog(apt)}>
+                      Düzenle
+                    </ModernButton>
+                    <ModernButton className="w-full bg-gradient-to-r from-pink-600 to-red-600 hover:from-pink-700 hover:to-red-700" size="sm" onClick={() => handleDelete(apt.id)}>
+                      Sil
+                    </ModernButton>
+                  </div>
+                  <div className="grid grid-cols-2 gap-2">
+                    <ModernButton className="w-full bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700" size="sm">
+                      QR Kod
+                    </ModernButton>
+                    <ModernButton className="w-full bg-gradient-to-r from-pink-600 to-red-600 hover:from-pink-700 hover:to-red-700" size="sm">
+                      Sil
+                    </ModernButton>
                   </div>
                 </div>
               </div>
@@ -422,7 +445,7 @@ export default function DairelerPage() {
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="max-w-md p-0 overflow-hidden bg-slate-800/50/95 backdrop-blur-xl border border-white/20 shadow-2xl">
-          <DialogHeader className="p-6 bg-gradient-to-r from-gray-50 to-white border-b border-white/10">
+          <DialogHeader className="p-6 bg-slate-800/50 border-b border-white/10">
             <DialogTitle className="text-xl font-bold text-white">
               {editingApartment ? "Daireyi Düzenle" : "Yeni Daire Ekle"}
             </DialogTitle>
