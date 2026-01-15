@@ -1,0 +1,47 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="512" height="512" rx="128" fill="url(#gradient)"/>
+  <defs>
+    <linearGradient id="gradient" x1="0" y1="0" x2="512" y2="512" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#06b6d4"/>
+      <stop offset="100%" stop-color="#3b82f6"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Building Icon -->
+  <g transform="translate(128, 96)">
+    <!-- Main Building -->
+    <rect x="0" y="80" width="120" height="240" fill="white" opacity="0.95" rx="8"/>
+    
+    <!-- Windows -->
+    <rect x="20" y="100" width="25" height="30" fill="#0f172a" rx="4"/>
+    <rect x="75" y="100" width="25" height="30" fill="#0f172a" rx="4"/>
+    
+    <rect x="20" y="150" width="25" height="30" fill="#0f172a" rx="4"/>
+    <rect x="75" y="150" width="25" height="30" fill="#0f172a" rx="4"/>
+    
+    <rect x="20" y="200" width="25" height="30" fill="#0f172a" rx="4"/>
+    <rect x="75" y="200" width="25" height="30" fill="#0f172a" rx="4"/>
+    
+    <rect x="20" y="250" width="25" height="30" fill="#0f172a" rx="4"/>
+    <rect x="75" y="250" width="25" height="30" fill="#0f172a" rx="4"/>
+    
+    <!-- Door -->
+    <rect x="40" y="280" width="40" height="40" fill="#0f172a" rx="4"/>
+    
+    <!-- Second Building -->
+    <rect x="140" y="120" width="100" height="200" fill="white" opacity="0.85" rx="8"/>
+    
+    <!-- Windows Second Building -->
+    <rect x="155" y="140" width="20" height="25" fill="#0f172a" rx="3"/>
+    <rect x="205" y="140" width="20" height="25" fill="#0f172a" rx="3"/>
+    
+    <rect x="155" y="185" width="20" height="25" fill="#0f172a" rx="3"/>
+    <rect x="205" y="185" width="20" height="25" fill="#0f172a" rx="3"/>
+    
+    <rect x="155" y="230" width="20" height="25" fill="#0f172a" rx="3"/>
+    <rect x="205" y="230" width="20" height="25" fill="#0f172a" rx="3"/>
+    
+    <!-- Door Second Building -->
+    <rect x="170" y="280" width="35" height="40" fill="#0f172a" rx="4"/>
+  </g>
+</svg>

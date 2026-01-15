@@ -43,6 +43,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="tr">
+      <head>
+        <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+        <link rel="apple-touch-icon" href="/icon.svg" />
+      </head>
       <body className={`${inter.className} antialiased bg-gray-50`}>
         <SessionProvider>
           {children}
