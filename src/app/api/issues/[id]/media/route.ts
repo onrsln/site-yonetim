@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
+import { put } from "@vercel/blob"
 
 export async function POST(
   request: NextRequest,
@@ -18,36 +19,54 @@ export async function POST(
     const images = formData.getAll("images") as File[]
     const videos = formData.getAll("videos") as File[]
 
-    // For now, we'll create media records with placeholder URLs
-    // In production, you would upload to Vercel Blob Storage first
     const mediaRecords = []
 
+    // Upload images to Vercel Blob Storage
     for (const image of images) {
-      const media = await prisma.media.create({
-        data: {
-          issueId: id,
-          type: "IMAGE",
-          url: `/uploads/placeholder-${Date.now()}-${image.name}`, // Placeholder
-        },
-      })
-      mediaRecords.push(media)
+      try {
+        const blob = await put(`issues/${id}/${Date.now()}-${image.name}`, image, {
+          access: "public",
+          addRandomSuffix: true,
+        })
+
+        const media = await prisma.media.create({
+          data: {
+            issueId: id,
+            type: "IMAGE",
+            url: blob.url,
+          },
+        })
+        mediaRecords.push(media)
+      } catch (uploadError) {
+        console.error("Error uploading image:", uploadError)
+      }
     }
 
+    // Upload videos to Vercel Blob Storage
     for (const video of videos) {
-      const media = await prisma.media.create({
-        data: {
-          issueId: id,
-          type: "VIDEO",
-          url: `/uploads/placeholder-${Date.now()}-${video.name}`, // Placeholder
-        },
-      })
-      mediaRecords.push(media)
+      try {
+        const blob = await put(`issues/${id}/${Date.now()}-${video.name}`, video, {
+          access: "public",
+          addRandomSuffix: true,
+        })
+
+        const media = await prisma.media.create({
+          data: {
+            issueId: id,
+            type: "VIDEO",
+            url: blob.url,
+          },
+        })
+        mediaRecords.push(media)
+      } catch (uploadError) {
+        console.error("Error uploading video:", uploadError)
+      }
     }
 
     return NextResponse.json({ 
       success: true, 
       media: mediaRecords,
-      message: "Medya dosyaları kaydedildi (geliştirme modu - gerçek upload için Vercel Blob gerekli)" 
+      message: `${mediaRecords.length} medya dosyası başarıyla yüklendi` 
     })
   } catch (error) {
     console.error("Error uploading media:", error)
