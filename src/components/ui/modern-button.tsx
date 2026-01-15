@@ -16,13 +16,13 @@ const ModernButton = React.forwardRef<HTMLButtonElement, ModernButtonProps>(
     const baseStyles = 'inline-flex items-center justify-center gap-2 font-medium rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed hover-lift'
     
     const variants = {
-      primary: 'bg-gradient-to-r from-[#0ea5e9] to-[#06b6d4] text-white hover:from-[#0284c7] hover:to-[#0891b2] focus:ring-[#0ea5e9] shadow-lg',
-      secondary: 'bg-gradient-to-r from-[#334155] to-[#475569] text-white hover:from-[#475569] hover:to-[#64748b] focus:ring-[#334155] shadow-lg',
-      success: 'bg-gradient-to-r from-[#10b981] to-[#059669] text-white hover:from-[#059669] hover:to-[#047857] focus:ring-[#10b981] shadow-lg',
-      warning: 'bg-gradient-to-r from-[#f59e0b] to-[#d97706] text-white hover:from-[#d97706] hover:to-[#b45309] focus:ring-[#f59e0b] shadow-lg',
-      danger: 'bg-gradient-to-r from-[#ef4444] to-[#dc2626] text-white hover:from-[#dc2626] hover:to-[#b91c1c] focus:ring-[#ef4444] shadow-lg',
-      ghost: 'bg-transparent text-[#e2e8f0] hover:bg-[#1a2942] focus:ring-[#0ea5e9]',
-      outline: 'border-2 border-[#2d3f5f] text-[#e2e8f0] hover:bg-[#1a2942] focus:ring-[#0ea5e9]',
+      primary: 'bg-gradient-to-br from-cyan-600 to-blue-600 text-white hover:from-cyan-700 hover:to-blue-700 focus:ring-cyan-400 shadow-lg hover:scale-105',
+      secondary: 'bg-slate-700 text-white hover:bg-slate-600 focus:ring-slate-500 shadow-lg border border-white/10',
+      success: 'bg-gradient-to-r from-green-500 to-green-600 text-white hover:from-green-600 hover:to-green-700 focus:ring-green-400 shadow-lg',
+      warning: 'bg-gradient-to-r from-orange-500 to-orange-600 text-white hover:from-orange-600 hover:to-orange-700 focus:ring-orange-400 shadow-lg',
+      danger: 'bg-gradient-to-r from-red-500 to-red-600 text-white hover:from-red-600 hover:to-red-700 focus:ring-red-400 shadow-lg',
+      ghost: 'bg-transparent text-slate-200 hover:bg-slate-700/30 focus:ring-cyan-400',
+      outline: 'border-2 border-white/10 text-slate-200 hover:bg-slate-800/50 focus:ring-cyan-400',
     }
     
     const sizes = {

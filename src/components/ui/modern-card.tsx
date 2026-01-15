@@ -13,11 +13,11 @@ const ModernCard = React.forwardRef<HTMLDivElement, ModernCardProps>(
     const baseStyles = 'rounded-2xl transition-all duration-300 backdrop-blur-sm'
     
     const variants = {
-      default: 'bg-[#1a2942] border border-[#2d3f5f] shadow-lg',
-      glass: 'bg-[#1a2942]/80 border border-[#2d3f5f]/50 shadow-lg',
-      gradient: 'bg-gradient-to-br from-[#1a2942] to-[#0f1e33] border border-[#2d3f5f] shadow-lg',
-      bordered: 'bg-[#1a2942] border-2 border-[#2d3f5f] shadow-lg',
-      custom: 'shadow-lg',
+      default: 'bg-slate-800/50 border border-white/10 shadow-xl',
+      glass: 'bg-slate-800/30 border border-white/10 shadow-xl backdrop-blur-xl',
+      gradient: 'bg-gradient-to-br from-slate-800/90 to-slate-900/90 border border-cyan-500/20 shadow-2xl',
+      bordered: 'bg-slate-800/50 border-2 border-white/10 shadow-xl',
+      custom: 'shadow-xl',
     }
     
     const paddings = {
