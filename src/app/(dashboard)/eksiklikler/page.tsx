@@ -194,6 +194,7 @@ export default function EksikliklerPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
+      // First create the issue
       const res = await fetch("/api/issues", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -201,6 +202,27 @@ export default function EksikliklerPage() {
       })
 
       if (res.ok) {
+        const newIssue = await res.json()
+        
+        // If there are images or videos, upload them
+        if (selectedImages.length > 0 || selectedVideos.length > 0) {
+          const uploadFormData = new FormData()
+          
+          selectedImages.forEach((image) => {
+            uploadFormData.append("images", image)
+          })
+          
+          selectedVideos.forEach((video) => {
+            uploadFormData.append("videos", video)
+          })
+          
+          // Upload media to the issue
+          await fetch(`/api/issues/${newIssue.id}/media`, {
+            method: "POST",
+            body: uploadFormData,
+          })
+        }
+        
         fetchIssues()
         setIsDialogOpen(false)
         resetForm()
