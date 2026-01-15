@@ -225,7 +225,7 @@ export default function BloklarPage() {
         <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {filteredBlocks.map((block) => (
             <ModernCard key={block.id} hover padding="none" className="overflow-hidden group">
-              <div className="h-24 bg-gradient-to-br from-indigo-500 to-purple-600 relative">
+              <div className="h-24 bg-gradient-to-br from-slate-700 to-slate-800 relative">
                 <div className="absolute top-4 right-4 z-10">
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -249,14 +249,14 @@ export default function BloklarPage() {
                   </DropdownMenu>
                 </div>
                 <div className="absolute -bottom-6 left-6">
-                  <div className="p-3 rounded-xl bg-slate-800/50 shadow-md border border-white/10">
-                    <Building className="h-8 w-8 text-indigo-600" />
+                  <div className="p-3 rounded-xl bg-gradient-to-br from-purple-600 to-pink-600 shadow-lg shadow-purple-500/50">
+                    <Building className="h-8 w-8 text-white" />
                   </div>
                 </div>
               </div>
               <div className="pt-10 px-6 pb-6">
                 <div>
-                  <h3 className="text-xl font-bold text-white group-hover:text-indigo-600 transition-colors">{block.name}</h3>
+                  <h3 className="text-xl font-bold text-white group-hover:text-purple-400 transition-colors">{block.name}</h3>
                   <div className="flex items-center gap-1.5 mt-2 text-sm text-slate-400">
                     <Building2 className="h-4 w-4 text-slate-500" />
                     {block.site.name}
@@ -280,13 +280,21 @@ export default function BloklarPage() {
                   </div>
                 </div>
 
-                {block._count.issues > 0 && (
-                  <div className="mt-4">
-                    <ModernBadge variant="warning" size="sm" className="w-full justify-center">
-                      {block._count.issues} Aktif Eksiklik
-                    </ModernBadge>
+                <div className="mt-6 pt-4 border-t border-white/10 space-y-2">
+                  <Link href={`/bloklar/${block.id}`}>
+                    <ModernButton className="w-full" variant="primary" size="sm">
+                      Daireleri Görüntüle →
+                    </ModernButton>
+                  </Link>
+                  <div className="grid grid-cols-2 gap-2">
+                    <ModernButton variant="secondary" size="sm" onClick={() => openEditDialog(block)}>
+                      Düzenle
+                    </ModernButton>
+                    <ModernButton variant="danger" size="sm" onClick={() => handleDelete(block.id)}>
+                      Sil
+                    </ModernButton>
                   </div>
-                )}
+                </div>
               </div>
             </ModernCard>
           ))}
@@ -295,7 +303,7 @@ export default function BloklarPage() {
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="max-w-md p-0 overflow-hidden bg-slate-800/50/95 backdrop-blur-xl border border-white/20 shadow-2xl">
-          <DialogHeader className="p-6 bg-gradient-to-r from-gray-50 to-white border-b border-white/10">
+          <DialogHeader className="p-6 bg-slate-800/50 border-b border-white/10">
             <DialogTitle className="text-xl font-bold text-white">
               {editingBlock ? "Bloğu Düzenle" : "Yeni Blok Ekle"}
             </DialogTitle>
